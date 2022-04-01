@@ -1,8 +1,6 @@
-/*	example code for cc65, for NES
- *  testing the zapper gun on controller slot 2
- *	using neslib
- *	Doug Fraker 2018
- */
+// todo:
+// [] change angle of the ball (y and x probably) whenever it's hit close to the goal line
+// [] fix background
 
 #include "LIB/neslib.h"
 #include "LIB/nesdoug.h"
@@ -101,6 +99,7 @@ void main(void)
 			{
 				new_ball();
 			}
+			gray_line();
 		}
 	}
 }
@@ -230,6 +229,8 @@ void move_ball(void)
 		++player_1_score;
 		ball_active = 0;
 		ball_wait = 20;
+		zap1_cooldown = 0;
+		zap2_cooldown = 0;
 	}
 
 	if (ball_x > RIGHT_BOUNDARY)
@@ -237,6 +238,8 @@ void move_ball(void)
 		++player_2_score;
 		ball_active = 0;
 		ball_wait = 20;
+		zap1_cooldown = 0;
+		zap2_cooldown = 0;
 	}
 }
 
@@ -328,19 +331,36 @@ void draw_score(void)
 
 void draw_cooldown(void)
 {
-	// index = 0;
-	// temp1 = zap1_cooldown>>2;
-	// while(index < MAX_COOLDOWN)
-	// {
-	// 	if(index < temp1) 
-	// 	{
-	// 		one_vram_buffer('|', NTADR_A(3+index, 25));
-	// 	} 
-	// 	else {
-	// 		one_vram_buffer(' ', NTADR_A(3+index, 25));
-	// 	}
+	//player 1 cooldown
+	index = 0;
+	temp1 = zap1_cooldown>>2;
+	while(index < MAX_COOLDOWN>>2)
+	{
+		if(index < temp1) 
+		{
+			one_vram_buffer('|', NTADR_A(3+index, 25));
+		} 
+		else {
+			one_vram_buffer(' ', NTADR_A(3+index, 25));
+		}
 		
-	// 	index += 1;
-	// }
+		index += 1;
+	}
+
+	//player 2 cooldown
+	index = 0;
+	temp1 = zap2_cooldown>>2;
+	while(index < MAX_COOLDOWN>>2)
+	{
+		if(index < temp1) 
+		{
+			one_vram_buffer('|', NTADR_A(26-index, 25));
+		} 
+		else {
+			one_vram_buffer(' ', NTADR_A(26-index, 25));
+		}
+		
+		index += 1;
+	}
 
 }
