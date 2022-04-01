@@ -19,18 +19,15 @@ void main(void)
 
 	bank_spr(1); // sprites use the 2nd tileset
 
-	vram_adr(NAMETABLE_A);
-	// this sets a start position on the BG, top left of screen
-	// vram_adr() and vram_unrle() need to be done with the screen OFF
 
 	ppu_wait_nmi(); // wait
 
-	// draw_bg();
 	game_mode = MODE_TITLE;
 
 	//	music_play(0); // silence
 
 	set_vram_buffer(); // points ppu update to vram_buffer, do this at least once
+
 
 	ppu_on_all(); // turn on screen
 
@@ -41,6 +38,7 @@ void main(void)
 		{
 			ppu_wait_nmi(); // wait till beginning of the frame
 			// todo, title stuff
+			draw_bg();
 
 			game_mode = MODE_GAME;
 		}
@@ -292,16 +290,14 @@ void draw_ball(void)
 
 void draw_bg(void)
 {
-	pal_fade_to(4, 0); // fade to black
 	ppu_off();				 // screen off
 	oam_clear();			 // clear all sprites
 
 	set_mt_pointer(metatiles);
-	pal_bg(level);
 	set_data_pointer(level);
-	memcpy(c_map, level, 240);
-
-	// draw the tiles
+	memcpy(c_map, level, 240);  
+ 
+	// draw the tiles 
 	for (y = 0;; y += 0x20)
 	{
 		for (x = 0;; x += 0x20)
@@ -317,16 +313,15 @@ void draw_bg(void)
 			break;
 	}
 
-	pal_fade_to(0, 4); // fade to black
 	ppu_on_all();
 }
 
 void draw_score(void)
 {
-	one_vram_buffer(player_1_score + 48, NTADR_A(3, 6));	
-	one_vram_buffer(player_2_score + 48, NTADR_A(26, 6)); 
-	multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(3, 8));
-	multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(26, 8));
+	one_vram_buffer(player_1_score + 48, NTADR_A(3, 2));	
+	one_vram_buffer(player_2_score + 48, NTADR_A(26, 2)); 
+	// multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(3, 8));
+	// multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(26, 8));
 }
 
 void draw_cooldown(void)
@@ -338,10 +333,10 @@ void draw_cooldown(void)
 	{
 		if(index < temp1) 
 		{
-			one_vram_buffer('|', NTADR_A(3+index, 25));
+			one_vram_buffer('|', NTADR_A(3+index, 26));
 		} 
 		else {
-			one_vram_buffer(' ', NTADR_A(3+index, 25));
+			one_vram_buffer(' ', NTADR_A(3+index, 26));
 		}
 		
 		index += 1;
@@ -352,12 +347,12 @@ void draw_cooldown(void)
 	temp1 = zap2_cooldown>>2;
 	while(index < MAX_COOLDOWN>>2)
 	{
-		if(index < temp1) 
+		if(index < temp1)  
 		{
-			one_vram_buffer('|', NTADR_A(26-index, 25));
+			one_vram_buffer('|', NTADR_A(26-index, 26));
 		} 
 		else {
-			one_vram_buffer(' ', NTADR_A(26-index, 25));
+			one_vram_buffer(' ', NTADR_A(26-index, 26));
 		}
 		
 		index += 1;

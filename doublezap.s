@@ -21,14 +21,11 @@
 	.import		_oam_meta_spr
 	.import		_pad_poll
 	.import		_bank_spr
-	.import		_vram_adr
 	.import		_memcpy
 	.import		_set_vram_buffer
 	.import		_one_vram_buffer
-	.import		_multi_vram_buffer_vert
 	.import		_get_pad_new
 	.import		_get_frame_count
-	.import		_pal_fade_to
 	.import		_get_ppu_addr
 	.import		_set_data_pointer
 	.import		_set_mt_pointer
@@ -144,180 +141,180 @@ _level:
 	.byte	$00
 	.byte	$00
 	.byte	$00
-	.byte	$00
-	.byte	$01
-	.byte	$02
-	.byte	$03
-	.byte	$04
-	.byte	$05
-	.byte	$06
-	.byte	$07
-	.byte	$08
-	.byte	$09
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$0B
-	.byte	$0C
-	.byte	$0D
-	.byte	$0E
-	.byte	$0F
-	.byte	$10
-	.byte	$11
-	.byte	$12
-	.byte	$13
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$14
 	.byte	$15
-	.byte	$16
-	.byte	$17
-	.byte	$18
-	.byte	$19
-	.byte	$1A
-	.byte	$1B
-	.byte	$1C
-	.byte	$1D
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$01
+	.byte	$03
+	.byte	$00
+	.byte	$00
+	.byte	$10
 	.byte	$00
 	.byte	$00
 	.byte	$00
 	.byte	$00
 	.byte	$00
 	.byte	$00
-	.byte	$1E
-	.byte	$1F
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
 	.byte	$20
-	.byte	$21
-	.byte	$22
-	.byte	$23
-	.byte	$24
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
+	.byte	$10
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$00
+	.byte	$20
+	.byte	$00
+	.byte	$00
 	.byte	$25
 	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
+	.byte	$26
 	.byte	$27
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$28
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
 	.byte	$00
 	.byte	$00
 	.byte	$00
@@ -696,7 +693,7 @@ _c_map:
 	cmp     #$01
 	lda     _ball_y+1
 	sbc     #$B0
-	bcc     L02AA
+	bcc     L02A9
 ;
 ; ball_y_direction = GOING_UP;
 ;
@@ -705,9 +702,9 @@ _c_map:
 ;
 ; if (ball_y < BOTTOM_BOUNDARY)
 ;
-L02AA:	ldx     _ball_y+1
-	cpx     #$30
-	bcs     L02AE
+L02A9:	ldx     _ball_y+1
+	cpx     #$20
+	bcs     L02AD
 ;
 ; ball_y_direction = GOING_DOWN;
 ;
@@ -716,8 +713,8 @@ L02AA:	ldx     _ball_y+1
 ;
 ; if (ball_x_direction == GOING_LEFT)
 ;
-L02AE:	lda     _ball_x_direction
-	bne     L02B2
+L02AD:	lda     _ball_x_direction
+	bne     L02B1
 ;
 ; ball_x -= ball_x_speed;
 ;
@@ -731,22 +728,22 @@ L02AE:	lda     _ball_x_direction
 ;
 ; else
 ;
-	jmp     L03B1
+	jmp     L0394
 ;
 ; ball_x += ball_x_speed;
 ;
-L02B2:	lda     _ball_x_speed
+L02B1:	lda     _ball_x_speed
 	clc
 	adc     _ball_x
 	sta     _ball_x
 	lda     _ball_x_speed+1
-L03B1:	adc     _ball_x+1
+L0394:	adc     _ball_x+1
 	sta     _ball_x+1
 ;
 ; if (ball_y_direction == GOING_UP)
 ;
 	lda     _ball_y_direction
-	bne     L02B9
+	bne     L02B8
 ;
 ; ball_y -= ball_y_speed;
 ;
@@ -760,23 +757,23 @@ L03B1:	adc     _ball_x+1
 ;
 ; else
 ;
-	jmp     L03B2
+	jmp     L0395
 ;
 ; ball_y += ball_y_speed;
 ;
-L02B9:	lda     _ball_y_speed
+L02B8:	lda     _ball_y_speed
 	clc
 	adc     _ball_y
 	sta     _ball_y
 	lda     _ball_y_speed+1
-L03B2:	adc     _ball_y+1
+L0395:	adc     _ball_y+1
 	sta     _ball_y+1
 ;
 ; if (ball_x < LEFT_BOUNDARY)
 ;
 	ldx     _ball_x+1
 	cpx     #$10
-	bcs     L02C0
+	bcs     L02BF
 ;
 ; ++player_1_score;
 ;
@@ -803,11 +800,11 @@ L03B2:	adc     _ball_y+1
 ;
 ; if (ball_x > RIGHT_BOUNDARY)
 ;
-L02C0:	lda     _ball_x
+L02BF:	lda     _ball_x
 	cmp     #$01
 	lda     _ball_x+1
 	sbc     #$D0
-	bcc     L02CB
+	bcc     L02CA
 ;
 ; ++player_2_score;
 ;
@@ -834,7 +831,7 @@ L02C0:	lda     _ball_x
 ;
 ; }
 ;
-L02CB:	rts
+L02CA:	rts
 
 .endproc
 
@@ -887,18 +884,18 @@ L02CB:	rts
 ;
 ; }
 ;
-	beq     L03B4
+	beq     L0397
 	cmp     #$01
-	beq     L03B5
+	beq     L0398
 	cmp     #$02
-	beq     L03B6
+	beq     L0399
 	cmp     #$03
-	beq     L03B7
+	beq     L039A
 	rts
 ;
 ; ball_x_direction = GOING_LEFT;
 ;
-L03B4:	sta     _ball_x_direction
+L0397:	sta     _ball_x_direction
 ;
 ; ball_y_direction = GOING_UP;
 ;
@@ -910,7 +907,7 @@ L03B4:	sta     _ball_x_direction
 ;
 ; ball_x_direction = GOING_LEFT;
 ;
-L03B5:	lda     #$00
+L0398:	lda     #$00
 	sta     _ball_x_direction
 ;
 ; ball_y_direction = GOING_DOWN;
@@ -924,7 +921,7 @@ L03B5:	lda     #$00
 ;
 ; ball_x_direction = GOING_RIGHT;
 ;
-L03B6:	lda     #$01
+L0399:	lda     #$01
 	sta     _ball_x_direction
 ;
 ; ball_y_direction = GOING_DOWN;
@@ -937,7 +934,7 @@ L03B6:	lda     #$01
 ;
 ; ball_x_direction = GOING_RIGHT;
 ;
-L03B7:	lda     #$01
+L039A:	lda     #$01
 	sta     _ball_x_direction
 ;
 ; ball_y_direction = GOING_UP;
@@ -1010,9 +1007,9 @@ L03B7:	lda     #$01
 ; if ((pad1_new & PAD_A) && zap1_cooldown == 0) //((pad1_zapper) && (zap1_ready));
 ;
 	and     #$80
-	beq     L03BB
+	beq     L039E
 	lda     _zap1_cooldown
-	bne     L03BB
+	bne     L039E
 ;
 ; trigger1_pulled = 1;
 ;
@@ -1026,16 +1023,16 @@ L03B7:	lda     #$01
 ;
 ; if ((pad1_new & PAD_B) && zap2_cooldown == 0) //((pad2_zapper) && (zap2_ready));
 ;
-L03BB:	lda     _pad1_new
+L039E:	lda     _pad1_new
 	and     #$40
-	beq     L03BD
+	beq     L03A0
 	lda     _zap2_cooldown
-	beq     L03BE
-L03BD:	rts
+	beq     L03A1
+L03A0:	rts
 ;
 ; trigger2_pulled = 1;
 ;
-L03BE:	lda     #$01
+L03A1:	lda     #$01
 	sta     _trigger2_pulled
 ;
 ; zap2_cooldown = MAX_COOLDOWN;
@@ -1064,13 +1061,13 @@ L03BE:	lda     #$01
 ;
 	lda     _trigger1_pulled
 	cmp     #$01
-	bne     L03BF
+	bne     L03A2
 ;
 ; if (pad1_new & PAD_A) //this is debug code
 ;
 	lda     _pad1_new
 	and     #$80
-	beq     L03BF
+	beq     L03A2
 ;
 ; zap1_hit_detected = 1;
 ;
@@ -1079,15 +1076,15 @@ L03BE:	lda     #$01
 ;
 ; if (trigger2_pulled == 1)
 ;
-L03BF:	lda     _trigger2_pulled
+L03A2:	lda     _trigger2_pulled
 	cmp     #$01
-	bne     L02A5
+	bne     L02A4
 ;
 ; if (pad1_new & PAD_B)//this is debug code
 ;
 	lda     _pad1_new
 	and     #$40
-	beq     L02A5
+	beq     L02A4
 ;
 ; zap2_hit_detected = 1;
 ;
@@ -1096,7 +1093,7 @@ L03BF:	lda     _trigger2_pulled
 ;
 ; }
 ;
-L02A5:	rts
+L02A4:	rts
 
 .endproc
 
@@ -1115,7 +1112,7 @@ L02A5:	rts
 ;
 	lda     _zap1_hit_detected
 	cmp     #$01
-	bne     L03C0
+	bne     L03A3
 ;
 ; ball_x_direction = GOING_RIGHT;
 ;
@@ -1123,9 +1120,9 @@ L02A5:	rts
 ;
 ; if (zap2_hit_detected == 1)
 ;
-L03C0:	lda     _zap2_hit_detected
+L03A3:	lda     _zap2_hit_detected
 	cmp     #$01
-	bne     L0262
+	bne     L0261
 ;
 ; ball_x_direction = GOING_LEFT;
 ;
@@ -1134,26 +1131,26 @@ L03C0:	lda     _zap2_hit_detected
 ;
 ; if (zap1_hit_detected || zap2_hit_detected) // if it's hit update the speed
 ;
-L0262:	lda     _zap1_hit_detected
-	bne     L03C1
+L0261:	lda     _zap1_hit_detected
+	bne     L03A4
 	lda     _zap2_hit_detected
-	bne     L03C1
+	bne     L03A4
 	rts
 ;
 ; ball_x_speed += DEFAULT_SPEED_STEP;
 ;
-L03C1:	lda     #$28
+L03A4:	lda     #$28
 	clc
 	adc     _ball_x_speed
 	sta     _ball_x_speed
-	bcc     L026B
+	bcc     L026A
 	inc     _ball_x_speed+1
 ;
 ; if (get_frame_count() & 0x01 == 1)
 ;
-L026B:	jsr     _get_frame_count
+L026A:	jsr     _get_frame_count
 	and     #$01
-	beq     L026C
+	beq     L026B
 ;
 ; ball_y_speed -= DEFAULT_SPEED_STEP / 4;
 ;
@@ -1161,7 +1158,7 @@ L026B:	jsr     _get_frame_count
 	sec
 	sbc     #$0A
 	sta     _ball_y_speed
-	bcs     L0274
+	bcs     L0273
 	dec     _ball_y_speed+1
 ;
 ; else
@@ -1170,16 +1167,16 @@ L026B:	jsr     _get_frame_count
 ;
 ; ball_y_speed += DEFAULT_SPEED_STEP;
 ;
-L026C:	lda     #$28
+L026B:	lda     #$28
 	clc
 	adc     _ball_y_speed
 	sta     _ball_y_speed
-	bcc     L0274
+	bcc     L0273
 	inc     _ball_y_speed+1
 ;
 ; }
 ;
-L0274:	rts
+L0273:	rts
 
 .endproc
 
@@ -1197,7 +1194,7 @@ L0274:	rts
 ; if(zap1_cooldown > 0){
 ;
 	lda     _zap1_cooldown
-	beq     L03C2
+	beq     L03A5
 ;
 ; --zap1_cooldown;
 ;
@@ -1205,8 +1202,8 @@ L0274:	rts
 ;
 ; if(zap2_cooldown > 0){
 ;
-L03C2:	lda     _zap2_cooldown
-	beq     L025A
+L03A5:	lda     _zap2_cooldown
+	beq     L0259
 ;
 ; --zap2_cooldown;
 ;
@@ -1214,7 +1211,7 @@ L03C2:	lda     _zap2_cooldown
 ;
 ; }
 ;
-L025A:	rts
+L0259:	rts
 
 .endproc
 
@@ -1301,13 +1298,6 @@ L025A:	rts
 .segment	"CODE"
 
 ;
-; pal_fade_to(4, 0); // fade to black
-;
-	lda     #$04
-	jsr     pusha
-	lda     #$00
-	jsr     _pal_fade_to
-;
 ; ppu_off();     // screen off
 ;
 	jsr     _ppu_off
@@ -1322,36 +1312,30 @@ L025A:	rts
 	ldx     #>(_metatiles)
 	jsr     _set_mt_pointer
 ;
-; pal_bg(level);
-;
-	lda     #<(_level)
-	ldx     #>(_level)
-	jsr     _pal_bg
-;
 ; set_data_pointer(level);
 ;
 	lda     #<(_level)
 	ldx     #>(_level)
 	jsr     _set_data_pointer
 ;
-; memcpy(c_map, level, 240);
+; memcpy(c_map, level, 240);  
 ;
 	ldy     #$00
-L0323:	lda     _level,y
+L031D:	lda     _level,y
 	sta     _c_map,y
 	iny
 	cpy     #$F0
-	bne     L0323
+	bne     L031D
 ;
 ; for (y = 0;; y += 0x20)
 ;
 	lda     #$00
-L03C5:	sta     _y
+L03A8:	sta     _y
 ;
 ; for (x = 0;; x += 0x20)
 ;
 	lda     #$00
-L03C4:	sta     _x
+L03A7:	sta     _x
 ;
 ; address = get_ppu_addr(0, x, y);
 ;
@@ -1400,41 +1384,34 @@ L03C4:	sta     _x
 ;
 ; break;
 ;
-	beq     L03C6
+	beq     L03A9
 ;
 ; for (x = 0;; x += 0x20)
 ;
 	lda     #$20
 	clc
 	adc     _x
-	jmp     L03C4
+	jmp     L03A7
 ;
 ; if (y == 0xe0)
 ;
-L03C6:	lda     _y
+L03A9:	lda     _y
 	cmp     #$E0
 ;
 ; break;
 ;
-	beq     L0325
+	beq     L031F
 ;
 ; for (y = 0;; y += 0x20)
 ;
 	lda     #$20
 	clc
 	adc     _y
-	jmp     L03C5
-;
-; pal_fade_to(0, 4); // fade to black
-;
-L0325:	lda     #$00
-	jsr     pusha
-	lda     #$04
-	jsr     _pal_fade_to
+	jmp     L03A8
 ;
 ; ppu_on_all();
 ;
-	jmp     _ppu_on_all
+L031F:	jmp     _ppu_on_all
 
 .endproc
 
@@ -1449,57 +1426,25 @@ L0325:	lda     #$00
 .segment	"CODE"
 
 ;
-; one_vram_buffer(player_1_score + 48, NTADR_A(3, 6)); 
+; one_vram_buffer(player_1_score + 48, NTADR_A(3, 2)); 
 ;
 	lda     _player_1_score
 	clc
 	adc     #$30
 	jsr     pusha
 	ldx     #$20
-	lda     #$C3
+	lda     #$43
 	jsr     _one_vram_buffer
 ;
-; one_vram_buffer(player_2_score + 48, NTADR_A(26, 6)); 
+; one_vram_buffer(player_2_score + 48, NTADR_A(26, 2)); 
 ;
 	lda     _player_2_score
 	clc
 	adc     #$30
 	jsr     pusha
 	ldx     #$20
-	lda     #$DA
-	jsr     _one_vram_buffer
-;
-; multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(3, 8));
-;
-	jsr     decsp3
-	lda     #<(_lines)
-	ldy     #$01
-	sta     (sp),y
-	iny
-	lda     #>(_lines)
-	sta     (sp),y
-	lda     #$0F
-	ldy     #$00
-	sta     (sp),y
-	ldx     #$21
-	lda     #$03
-	jsr     _multi_vram_buffer_vert
-;
-; multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(26, 8));
-;
-	jsr     decsp3
-	lda     #<(_lines)
-	ldy     #$01
-	sta     (sp),y
-	iny
-	lda     #>(_lines)
-	sta     (sp),y
-	lda     #$0F
-	ldy     #$00
-	sta     (sp),y
-	ldx     #$21
-	lda     #$1A
-	jmp     _multi_vram_buffer_vert
+	lda     #$5A
+	jmp     _one_vram_buffer
 
 .endproc
 
@@ -1529,34 +1474,34 @@ L0325:	lda     #$00
 ;
 ; while(index < MAX_COOLDOWN>>2)
 ;
-	jmp     L03CA
+	jmp     L03AD
 ;
 ; if(index < temp1) 
 ;
-L03C9:	lda     _index
+L03AC:	lda     _index
 	cmp     _temp1
 	txa
 	sbc     #$00
-	bcs     L0379
+	bcs     L035C
 ;
-; one_vram_buffer('|', NTADR_A(3+index, 25));
+; one_vram_buffer('|', NTADR_A(3+index, 26));
 ;
 	lda     #$7C
 ;
 ; else {
 ;
-	jmp     L03EC
+	jmp     L03CF
 ;
-; one_vram_buffer(' ', NTADR_A(3+index, 25));
+; one_vram_buffer(' ', NTADR_A(3+index, 26));
 ;
-L0379:	lda     #$20
-L03EC:	jsr     pusha
+L035C:	lda     #$20
+L03CF:	jsr     pusha
 	lda     _index
 	clc
 	adc     #$03
-	bcc     L038D
+	bcc     L0370
 	ldx     #$01
-L038D:	ora     #$20
+L0370:	ora     #$40
 	pha
 	txa
 	ora     #$03
@@ -1576,9 +1521,9 @@ L038D:	ora     #$20
 ; while(index < MAX_COOLDOWN>>2)
 ;
 	ldx     #$00
-L03CA:	lda     _index
+L03AD:	lda     _index
 	cmp     #$08
-	bcc     L03C9
+	bcc     L03AC
 ;
 ; index = 0;
 ;
@@ -1593,28 +1538,28 @@ L03CA:	lda     _index
 ;
 ; while(index < MAX_COOLDOWN>>2)
 ;
-	jmp     L03CC
+	jmp     L03AF
 ;
-; if(index < temp1) 
+; if(index < temp1)  
 ;
-L03CB:	lda     _index
+L03AE:	lda     _index
 	cmp     _temp1
 	txa
 	sbc     #$00
-	bcs     L0398
+	bcs     L037B
 ;
-; one_vram_buffer('|', NTADR_A(26-index, 25));
+; one_vram_buffer('|', NTADR_A(26-index, 26));
 ;
 	lda     #$7C
 ;
 ; else {
 ;
-	jmp     L03F0
+	jmp     L03D3
 ;
-; one_vram_buffer(' ', NTADR_A(26-index, 25));
+; one_vram_buffer(' ', NTADR_A(26-index, 26));
 ;
-L0398:	lda     #$20
-L03F0:	jsr     pusha
+L037B:	lda     #$20
+L03D3:	jsr     pusha
 	lda     #$1A
 	sec
 	sbc     _index
@@ -1623,7 +1568,7 @@ L03F0:	jsr     pusha
 	sbc     #$00
 	tax
 	pla
-	ora     #$20
+	ora     #$40
 	pha
 	txa
 	ora     #$03
@@ -1643,9 +1588,9 @@ L03F0:	jsr     pusha
 ; while(index < MAX_COOLDOWN>>2)
 ;
 	ldx     #$00
-L03CC:	lda     _index
+L03AF:	lda     _index
 	cmp     #$08
-	bcc     L03CB
+	bcc     L03AE
 ;
 ; }
 ;
@@ -1689,12 +1634,6 @@ L03CC:	lda     _index
 	lda     #$01
 	jsr     _bank_spr
 ;
-; vram_adr(NAMETABLE_A);
-;
-	ldx     #$20
-	lda     #$00
-	jsr     _vram_adr
-;
 ; ppu_wait_nmi(); // wait
 ;
 	jsr     _ppu_wait_nmi
@@ -1714,11 +1653,15 @@ L03CC:	lda     _index
 ;
 ; while (game_mode == MODE_TITLE) // gameloop
 ;
-	jmp     L03F1
+	jmp     L03D4
 ;
 ; ppu_wait_nmi(); // wait till beginning of the frame
 ;
-L0220:	jsr     _ppu_wait_nmi
+L021E:	jsr     _ppu_wait_nmi
+;
+; draw_bg();
+;
+	jsr     _draw_bg
 ;
 ; game_mode = MODE_GAME;
 ;
@@ -1727,16 +1670,16 @@ L0220:	jsr     _ppu_wait_nmi
 ;
 ; while (game_mode == MODE_TITLE) // gameloop
 ;
-L03F1:	lda     _game_mode
-	beq     L0220
+L03D4:	lda     _game_mode
+	beq     L021E
 ;
 ; while (game_mode == MODE_GAME) // gameloop
 ;
-	jmp     L03F3
+	jmp     L03D6
 ;
 ; ppu_wait_nmi(); // wait till beginning of the frame
 ;
-L0227:	jsr     _ppu_wait_nmi
+L0226:	jsr     _ppu_wait_nmi
 ;
 ; zap1_hit_detected = 0;
 ;
@@ -1770,7 +1713,7 @@ L0227:	jsr     _ppu_wait_nmi
 ; if (ball_active)
 ;
 	lda     _ball_active
-	beq     L0235
+	beq     L0234
 ;
 ; move_ball();
 ;
@@ -1783,22 +1726,22 @@ L0227:	jsr     _ppu_wait_nmi
 ; if (trigger1_pulled || trigger2_pulled)
 ;
 	lda     _trigger1_pulled
-	bne     L023A
+	bne     L0239
 	lda     _trigger2_pulled
-	beq     L0253
+	beq     L0252
 ;
 ; index = 0;
 ;
-L023A:	lda     #$00
+L0239:	lda     #$00
 	sta     _index
 ;
 ; while (index < frames_to_wait)
 ;
-	jmp     L03F2
+	jmp     L03D5
 ;
 ; ppu_wait_nmi();
 ;
-L023E:	jsr     _ppu_wait_nmi
+L023D:	jsr     _ppu_wait_nmi
 ;
 ; ++index;
 ;
@@ -1806,9 +1749,9 @@ L023E:	jsr     _ppu_wait_nmi
 ;
 ; while (index < frames_to_wait)
 ;
-L03F2:	lda     _index
+L03D5:	lda     _index
 	cmp     _frames_to_wait
-	bcc     L023E
+	bcc     L023D
 ;
 ; oam_clear();
 ;
@@ -1850,9 +1793,9 @@ L03F2:	lda     _index
 ;
 ; else if (ball_wait)
 ;
-	jmp     L0253
-L0235:	lda     _ball_wait
-	beq     L0250
+	jmp     L0252
+L0234:	lda     _ball_wait
+	beq     L024F
 ;
 ; --ball_wait;
 ;
@@ -1860,25 +1803,25 @@ L0235:	lda     _ball_wait
 ;
 ; else
 ;
-	jmp     L0253
+	jmp     L0252
 ;
 ; new_ball();
 ;
-L0250:	jsr     _new_ball
+L024F:	jsr     _new_ball
 ;
 ; gray_line();
 ;
-L0253:	jsr     _gray_line
+L0252:	jsr     _gray_line
 ;
 ; while (game_mode == MODE_GAME) // gameloop
 ;
-L03F3:	lda     _game_mode
+L03D6:	lda     _game_mode
 	cmp     #$01
-	beq     L0227
+	beq     L0226
 ;
 ; while (1)
 ;
-	jmp     L03F1
+	jmp     L03D4
 
 .endproc
 
