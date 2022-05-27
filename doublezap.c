@@ -150,20 +150,31 @@ void read_input_triggers(void)
 	pad1_zapper = zap_shoot(0); // controller slot 1
 	pad2_zapper = zap_shoot(1); // controller slot 2
 
-	// for debug, testing just a controller:
-	pad1 = pad_poll(0);
-	pad1_new = get_pad_new(0);
-
-	if ((pad1_new & PAD_A) && zap1_cooldown == 0) //((pad1_zapper) && (zap1_ready));
+	if ((pad1_zapper) && (zap1_ready));
 	{
 		trigger1_pulled = 1;
 		zap1_cooldown = MAX_COOLDOWN;
 	}
-	if ((pad1_new & PAD_B) && zap2_cooldown == 0) //((pad2_zapper) && (zap2_ready));
+	if ((pad2_zapper) && (zap2_ready))
 	{
 		trigger2_pulled = 1;
 		zap2_cooldown = MAX_COOLDOWN;
 	}
+
+	//debug code (for using controller to shoot and miss)
+	// pad1 = pad_poll(0);
+	// pad1_new = get_pad_new(0);
+
+	// if ((pad1_new & PAD_A) && zap1_cooldown == 0) //((pad1_zapper) && (zap1_ready));
+	// {
+	// 	trigger1_pulled = 1;
+	// 	zap1_cooldown = MAX_COOLDOWN;
+	// }
+	// if ((pad1_new & PAD_B) && zap2_cooldown == 0) //((pad2_zapper) && (zap2_ready));
+	// {
+	// 	trigger2_pulled = 1;
+	// 	zap2_cooldown = MAX_COOLDOWN;
+	// }
 }
 
 void read_zapper_hits(void)
@@ -172,19 +183,22 @@ void read_zapper_hits(void)
 	// this should be the read code:
 	if (trigger1_pulled == 1)
 	{
-		//  zap1_hit_detected = zap_read(0); // look for light in zapper, port 1
-		if (pad1_new & PAD_A) //this is debug code
-		{
-			zap1_hit_detected = 1;
-		}
+		zap1_hit_detected = zap_read(0); // look for light in zapper, port 1
+		//debug controller read code
+		// if (pad1_new & PAD_A) 
+		// {
+		// 	zap1_hit_detected = 1;
+		// }
 	}
 	if (trigger2_pulled == 1)
 	{
-		//  zap2_hit_detected = zap_read(1); // look for light in zapper, port 2
-		if (pad1_new & PAD_B)//this is debug code
-		{
-			zap2_hit_detected = 1;
-		}
+		zap2_hit_detected = zap_read(1); // look for light in zapper, port 2
+
+		//debug controller read code
+		// if (pad1_new & PAD_B)
+		// {
+		// 	zap2_hit_detected = 1;
+		// }
 	}
 
 }
