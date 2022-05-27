@@ -1,6 +1,7 @@
 // todo:
 // [] change angle of the ball (y and x probably) whenever it's hit close to the goal line
-// [] fix background
+// [] flash two frames (top and bottom) of the ball to put spin on it?
+// [] add title screen with button holding down
 
 #include "LIB/neslib.h"
 #include "LIB/nesdoug.h"
