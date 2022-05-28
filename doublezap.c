@@ -20,7 +20,6 @@ void main(void)
 
 	bank_spr(1); // sprites use the 2nd tileset
 
-
 	ppu_wait_nmi(); // wait
 
 	game_mode = MODE_TITLE;
@@ -28,7 +27,6 @@ void main(void)
 	//	music_play(0); // silence
 
 	set_vram_buffer(); // points ppu update to vram_buffer, do this at least once
-
 
 	ppu_on_all(); // turn on screen
 
@@ -87,7 +85,7 @@ void main(void)
 
 					read_zapper_hits();
 					update_ball_movement(); // based off zapper hit data
-					// if hit failed, it should have already ran into the next nmi
+																	// if hit failed, it should have already ran into the next nmi
 				}
 			}
 			else if (ball_wait)
@@ -105,10 +103,12 @@ void main(void)
 
 void update_cooldown(void)
 {
-	if(zap1_cooldown > 0){
+	if (zap1_cooldown > 0)
+	{
 		--zap1_cooldown;
 	}
-	if(zap2_cooldown > 0){
+	if (zap2_cooldown > 0)
+	{
 		--zap2_cooldown;
 	}
 }
@@ -150,20 +150,20 @@ void read_input_triggers(void)
 	pad1_zapper = zap_shoot(0); // controller slot 1
 	pad2_zapper = zap_shoot(1); // controller slot 2
 
-	if ((pad1_zapper) && (zap1_ready));
+	if ((pad1_zapper == 1) && (zap1_ready))
 	{
 		trigger1_pulled = 1;
 		zap1_cooldown = MAX_COOLDOWN;
 	}
-	if ((pad2_zapper) && (zap2_ready))
+	if ((pad2_zapper == 1) && (zap2_ready))
 	{
 		trigger2_pulled = 1;
 		zap2_cooldown = MAX_COOLDOWN;
 	}
 
-	//debug code (for using controller to shoot and miss)
-	// pad1 = pad_poll(0);
-	// pad1_new = get_pad_new(0);
+	// debug code (for using controller to shoot and miss)
+	//  pad1 = pad_poll(0);
+	//  pad1_new = get_pad_new(0);
 
 	// if ((pad1_new & PAD_A) && zap1_cooldown == 0) //((pad1_zapper) && (zap1_ready));
 	// {
@@ -184,23 +184,22 @@ void read_zapper_hits(void)
 	if (trigger1_pulled == 1)
 	{
 		zap1_hit_detected = zap_read(0); // look for light in zapper, port 1
-		//debug controller read code
-		// if (pad1_new & PAD_A) 
-		// {
-		// 	zap1_hit_detected = 1;
-		// }
+																		 // debug controller read code
+																		 //  if (pad1_new & PAD_A)
+																		 //  {
+																		 //  	zap1_hit_detected = 1;
+																		 //  }
 	}
 	if (trigger2_pulled == 1)
 	{
 		zap2_hit_detected = zap_read(1); // look for light in zapper, port 2
 
-		//debug controller read code
-		// if (pad1_new & PAD_B)
-		// {
-		// 	zap2_hit_detected = 1;
-		// }
+		// debug controller read code
+		//  if (pad1_new & PAD_B)
+		//  {
+		//  	zap2_hit_detected = 1;
+		//  }
 	}
-
 }
 
 void move_ball(void)
@@ -305,14 +304,14 @@ void draw_ball(void)
 
 void draw_bg(void)
 {
-	ppu_off();				 // screen off
-	oam_clear();			 // clear all sprites
+	ppu_off();	 // screen off
+	oam_clear(); // clear all sprites
 
 	set_mt_pointer(metatiles);
 	set_data_pointer(level);
-	memcpy(c_map, level, 240);  
- 
-	// draw the tiles 
+	memcpy(c_map, level, 240);
+
+	// draw the tiles
 	for (y = 0;; y += 0x20)
 	{
 		for (x = 0;; x += 0x20)
@@ -333,44 +332,45 @@ void draw_bg(void)
 
 void draw_score(void)
 {
-	one_vram_buffer(player_1_score + 48, NTADR_A(3, 2));	
-	one_vram_buffer(player_2_score + 48, NTADR_A(26, 2)); 
+	one_vram_buffer(player_1_score + 48, NTADR_A(3, 2));
+	one_vram_buffer(player_2_score + 48, NTADR_A(26, 2));
 	// multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(3, 8));
 	// multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(26, 8));
 }
 
 void draw_cooldown(void)
 {
-	//player 1 cooldown
+	// player 1 cooldown
 	index = 0;
-	temp1 = zap1_cooldown>>2;
-	while(index < MAX_COOLDOWN>>2)
+	temp1 = zap1_cooldown >> 2;
+	while (index < MAX_COOLDOWN >> 2)
 	{
-		if(index < temp1) 
+		if (index < temp1)
 		{
-			one_vram_buffer('|', NTADR_A(3+index, 26));
-		} 
-		else {
-			one_vram_buffer(' ', NTADR_A(3+index, 26));
+			one_vram_buffer('|', NTADR_A(3 + index, 26));
 		}
-		
+		else
+		{
+			one_vram_buffer(' ', NTADR_A(3 + index, 26));
+		}
+
 		index += 1;
 	}
 
-	//player 2 cooldown
+	// player 2 cooldown
 	index = 0;
-	temp1 = zap2_cooldown>>2;
-	while(index < MAX_COOLDOWN>>2)
+	temp1 = zap2_cooldown >> 2;
+	while (index < MAX_COOLDOWN >> 2)
 	{
-		if(index < temp1)  
+		if (index < temp1)
 		{
-			one_vram_buffer('|', NTADR_A(26-index, 26));
-		} 
-		else {
-			one_vram_buffer(' ', NTADR_A(26-index, 26));
+			one_vram_buffer('|', NTADR_A(26 - index, 26));
 		}
-		
+		else
+		{
+			one_vram_buffer(' ', NTADR_A(26 - index, 26));
+		}
+
 		index += 1;
 	}
-
 }
