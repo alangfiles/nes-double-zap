@@ -334,8 +334,6 @@ void draw_score(void)
 {
 	one_vram_buffer(player_1_score + 48, NTADR_A(3, 2));
 	one_vram_buffer(player_2_score + 48, NTADR_A(26, 2));
-	// multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(3, 8));
-	// multi_vram_buffer_vert(lines, sizeof(lines) - 1, NTADR_A(26, 8));
 }
 
 void draw_cooldown(void)

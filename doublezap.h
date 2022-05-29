@@ -2,8 +2,8 @@
 #define DEFAULT_X_SPEED 300
 #define DEFAULT_Y_SPEED 200
 #define DEFAULT_SPEED_STEP 40
-#define LEFT_BOUNDARY 0x1000
-#define RIGHT_BOUNDARY 0xd000
+#define LEFT_BOUNDARY 0x0500
+#define RIGHT_BOUNDARY 0xe000
 #define TOP_BOUNDARY 0xb000
 #define BOTTOM_BOUNDARY 0x2000
 #define MIDDLE_SCREEN 0x7000
@@ -69,10 +69,6 @@ unsigned char index = 0;
 #pragma bss-name(push, "BSS")
 
 unsigned char c_map[240];// collision map
-
-
-const unsigned char lines[] = "|||||||||||||||";
-
 
 // PROTOTYPES
 void move_ball(void);
