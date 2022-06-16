@@ -60,7 +60,6 @@ const unsigned char AlanHead[]={
 	  0,  8,0xdc,0,
 	  8,  8,0xdd,0,
 	128
-
 };
 
 
