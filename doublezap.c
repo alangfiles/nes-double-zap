@@ -150,12 +150,12 @@ void read_input_triggers(void)
 	pad1_zapper = zap_shoot(0); // controller slot 1
 	pad2_zapper = zap_shoot(1); // controller slot 2
 
-	if ((pad1_zapper == 1) && (zap1_ready))
+	if ((pad1_zapper == 1) && (zap1_ready) && zap1_cooldown == 0)
 	{
 		trigger1_pulled = 1;
 		zap1_cooldown = MAX_COOLDOWN;
 	}
-	if ((pad2_zapper == 1) && (zap2_ready))
+	if ((pad2_zapper == 1) && (zap2_ready) && zap2_cooldown == 0)
 	{
 		trigger2_pulled = 1;
 		zap2_cooldown = MAX_COOLDOWN;
