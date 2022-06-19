@@ -12,6 +12,7 @@
 #define MAX_BALLS 4
 #define TURN_OFF 0xff
 #define NO_HITS 0xfe
+#define MAX_HITS 0
 
 #pragma bss-name(push, "ZEROPAGE")
 
@@ -42,6 +43,7 @@ unsigned char balls_y_speed[MAX_BALLS];
 unsigned char balls_x_direction[MAX_BALLS];
 unsigned char balls_y_direction[MAX_BALLS];
 unsigned char balls_active[MAX_BALLS];
+unsigned char balls_hits[MAX_BALLS];
 //unsigned char sprites_actual_x[MAX_ROOM_SPRITES];
 unsigned char balls_type[MAX_BALLS];
 
@@ -120,7 +122,7 @@ void move_balls(void);
 void new_ball(void);
 void read_input_triggers(void);
 void read_zapper_hits(void);
-void update_ball_movement(void);
+void handle_ball_hit(void);
 void update_cooldown(void);
 void draw_box(void);
 void draw_ball(void);

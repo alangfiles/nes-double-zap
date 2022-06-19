@@ -124,7 +124,7 @@ void trigger_pulled(void)
 			break;
 		}
 	}
-	update_ball_movement(); // based off zapper hit data
+	handle_ball_hit(); // based off zapper hit data
 
 	ppu_mask(0x1e); // bg on, won't happen till NEXT frame
 }
@@ -141,7 +141,7 @@ void update_cooldown(void)
 	}
 }
 
-void update_ball_movement(void)
+void handle_ball_hit(void)
 {
 	if (zap1_hit_detected == 1)
 	{
@@ -162,6 +162,45 @@ void update_ball_movement(void)
 		else
 		{
 			balls_y_speed[index] += DEFAULT_SPEED_STEP;
+		}
+
+		// handle hit / split up ball (for non-small balls)
+		balls_hits[index] = balls_hits[index] + 1;
+		if (balls_hits[index] > MAX_HITS && balls_type[index] != SMALL_BALL)
+		{
+			// destroy this ball, and spawn two less ones
+
+			// find an empty spot in the array
+			for (index2 = 0; index2 < MAX_BALLS; ++index2)
+			{
+				if (balls_type[index2] == TURN_OFF)
+				{
+					break;
+				}
+			}
+
+			switch (balls_type[index])
+			{
+			case MEDIUM_BALL:
+				balls_type[index2] = SMALL_BALL;
+				break;
+			case LARGE_BALL:
+				balls_type[index2] = MEDIUM_BALL;
+			default:
+				break;
+			}
+			// copy over the old parent's values
+			balls_x[index2] = balls_x[index];
+			balls_y[index2] = balls_y[index];
+
+			balls_x_speed[index2] = balls_x_speed[index];
+			balls_y_speed[index2] = balls_y_speed[index];
+			balls_x_direction[index2] = balls_x_direction[index];
+			balls_y_direction[index2] = GOING_UP;
+
+			// now that it's copied, overwrite the current one
+			balls_type[index] = balls_type[index2];
+			balls_y_direction[index] = GOING_DOWN;
 		}
 	}
 }
@@ -302,9 +341,11 @@ void move_ball(void)
 void new_ball(void)
 {
 	// clear all the types (used to draw)
+	// clear how many hits
 	for (index = 0; index < MAX_BALLS; ++index)
 	{
 		balls_type[index] = TURN_OFF;
+		balls_hits[index] = 0;
 	}
 
 	// add a new big ball in slot 0
@@ -314,39 +355,6 @@ void new_ball(void)
 
 	balls_x[index] = MIDDLE_SCREEN;
 	balls_y[index] = MIDDLE_SCREEN;
-
-	balls_x_speed[index] = DEFAULT_X_SPEED;
-	balls_y_speed[index] = DEFAULT_Y_SPEED;
-
-	switch (get_frame_count() & 0b00000011)
-	{
-	case 0:
-		balls_x_direction[index] = GOING_LEFT;
-		balls_y_direction[index] = GOING_UP;
-		break;
-	case 1:
-		balls_x_direction[index] = GOING_LEFT;
-		balls_y_direction[index] = GOING_DOWN;
-		break;
-	case 2:
-		balls_x_direction[index] = GOING_RIGHT;
-		balls_y_direction[index] = GOING_DOWN;
-		break;
-	case 3:
-		balls_x_direction[index] = GOING_RIGHT;
-		balls_y_direction[index] = GOING_UP;
-		break;
-	default:
-		break;
-	}
-
-	// balls_active[index] = 1;
-	// let's just add another one too:
-	index = 1;
-	balls_type[index] = SMALL_BALL;
-
-	balls_x[index] = MIDDLE_SCREEN;
-	balls_y[index] = MIDDLE_SCREEN + 40;
 
 	balls_x_speed[index] = DEFAULT_X_SPEED;
 	balls_y_speed[index] = DEFAULT_Y_SPEED;
