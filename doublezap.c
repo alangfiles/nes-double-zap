@@ -27,8 +27,7 @@ void main(void)
 	//	music_play(0); // silence
 
 	set_vram_buffer(); // points ppu update to vram_buffer, do this at least once
-
-	ppu_on_all(); // turn on screen
+	ppu_on_all();			 // turn on screen
 
 	while (1)
 	{
@@ -103,6 +102,7 @@ void trigger_pulled(void)
 	{
 		oam_clear(); // clear the NEXT frame
 		draw_box();	 // draw a ball on the next frame
+		ppu_wait_nmi();
 		read_zapper_hits();
 		if (zap1_hit_detected == 1 || zap2_hit_detected == 1)
 		{
@@ -139,7 +139,7 @@ void update_ball_movement(void)
 		balls_x_direction[index] = GOING_LEFT;
 	}
 
-	if (zap1_hit_detected || zap2_hit_detected) // if it's hit update the speed
+	if (zap1_hit_detected == 1 || zap2_hit_detected == 1) // if it's hit update the speed
 	{
 		balls_x_speed[index] += DEFAULT_SPEED_STEP;
 		if (get_frame_count() & 0x01 == 1)
@@ -220,14 +220,15 @@ void read_zapper_hits(void)
 
 void move_balls(void)
 {
-	offset = get_frame_count() & 3; // returns 0,1,2,3
+	// offset = get_frame_count() & 3; // returns 0,1,2,3
+	// offset = offset << 2;						// * 4, the size of the shuffle array
 	for (index = 0; index < MAX_BALLS; ++index)
 	{
-		index2 = shuffle_array[offset];
-		++offset;
-		index2 = index; // <-- shortcut to keep the shuffling code in if we need it
+		// index2 = shuffle_array[offset];
+		// ++offset;
+		// index2 = index; // <-- shortcut to keep the shuffling code in if we need it
 
-		if (balls_type[index2] == TURN_OFF)
+		if (balls_type[index] == TURN_OFF)
 			continue; // we found an empty spot
 
 		move_ball();
@@ -237,48 +238,51 @@ void move_balls(void)
 void move_ball(void)
 {
 	// bounce off ceiling
-	if (balls_y[index2] > TOP_BOUNDARY)
+	if (balls_y[index] > TOP_BOUNDARY)
 	{
-		balls_y_direction[index2] = GOING_UP;
+		balls_y_direction[index] = GOING_UP;
 	}
-	if (balls_y[index2] < BOTTOM_BOUNDARY)
+	if (balls_y[index] < BOTTOM_BOUNDARY)
 	{
-		balls_y_direction[index2] = GOING_DOWN;
+		balls_y_direction[index] = GOING_DOWN;
 	}
 
 	// move ball according to direction
 
-	if (balls_x_direction[index2] == GOING_LEFT)
+	if (balls_x_direction[index] == GOING_LEFT)
 	{
-		balls_x[index2] -= balls_x_speed[index2];
+		balls_x[index] -= balls_x_speed[index];
 	}
 	else
 	{
-		balls_x[index2] += balls_x_speed[index2];
+		balls_x[index] += balls_x_speed[index];
 	}
 
-	if (balls_y_direction[index2] == GOING_UP)
+	if (balls_y_direction[index] == GOING_UP)
 	{
-		balls_y[index2] -= balls_y_speed[index2];
+		balls_y[index] -= balls_y_speed[index];
 	}
 	else
 	{
-		balls_y[index2] += balls_y_speed[index2];
+		balls_y[index] += balls_y_speed[index];
 	}
 
 	// check boundaries
 
-	if (balls_x[index2] < LEFT_BOUNDARY)
+	if (balls_x[index] < LEFT_BOUNDARY)
 	{
 		++player_1_score;
+		balls_active[index] = TURN_OFF;
+		// balls_type[index] = TURN
 		--number_of_balls_active;
 		zap1_cooldown = 0;
 		zap2_cooldown = 0;
 	}
 
-	if (balls_x[index2] > RIGHT_BOUNDARY)
+	if (balls_x[index] > RIGHT_BOUNDARY)
 	{
 		++player_2_score;
+		balls_active[index] = TURN_OFF;
 		--number_of_balls_active;
 		zap1_cooldown = 0;
 		zap2_cooldown = 0;
@@ -327,6 +331,38 @@ void new_ball(void)
 	}
 	number_of_balls_active++;
 	// balls_active[index] = 1;
+	// let's just add another one too:
+	index = 1;
+	balls_type[index] = SMALL_BALL;
+
+	balls_x[index] = MIDDLE_SCREEN;
+	balls_y[index] = MIDDLE_SCREEN + 40;
+
+	balls_x_speed[index] = DEFAULT_X_SPEED;
+	balls_y_speed[index] = DEFAULT_Y_SPEED;
+
+	switch (get_frame_count() & 0b00000011)
+	{
+	case 0:
+		balls_x_direction[index] = GOING_LEFT;
+		balls_y_direction[index] = GOING_UP;
+		break;
+	case 1:
+		balls_x_direction[index] = GOING_LEFT;
+		balls_y_direction[index] = GOING_DOWN;
+		break;
+	case 2:
+		balls_x_direction[index] = GOING_RIGHT;
+		balls_y_direction[index] = GOING_DOWN;
+		break;
+	case 3:
+		balls_x_direction[index] = GOING_RIGHT;
+		balls_y_direction[index] = GOING_UP;
+		break;
+	default:
+		break;
+	}
+	number_of_balls_active++;
 }
 
 void draw_box(void)
@@ -398,6 +434,7 @@ void draw_ball(void)
 void draw_balls(void)
 {
 	offset = get_frame_count() & 3; // returns 0,1,2,3
+	offset = offset << 2;						// * 4, the size of the shuffle array
 	for (index = 0; index < MAX_BALLS; ++index)
 	{
 		index2 = shuffle_array[offset];
