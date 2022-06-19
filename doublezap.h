@@ -12,7 +12,7 @@
 #define MAX_BALLS 4
 #define TURN_OFF 0xff
 #define NO_HITS 0xfe
-#define MAX_HITS 0
+#define MAX_HITS 3
 
 #pragma bss-name(push, "ZEROPAGE")
 

@@ -767,7 +767,7 @@ _c_map:
 	ldy     _index
 	lda     _balls_y,y
 	cmp     #$B1
-	bcc     L0360
+	bcc     L0368
 ;
 ; balls_y_direction[index] = GOING_UP;
 ;
@@ -777,10 +777,10 @@ _c_map:
 ;
 ; if (balls_y[index] < BOTTOM_BOUNDARY)
 ;
-L0360:	ldy     _index
+L0368:	ldy     _index
 	lda     _balls_y,y
 	cmp     #$20
-	bcs     L0368
+	bcs     L0370
 ;
 ; balls_y_direction[index] = GOING_DOWN;
 ;
@@ -790,9 +790,9 @@ L0360:	ldy     _index
 ;
 ; if (balls_x_direction[index] == GOING_LEFT)
 ;
-L0368:	ldy     _index
+L0370:	ldy     _index
 	lda     _balls_x_direction,y
-	bne     L0370
+	bne     L0378
 ;
 ; balls_x[index] -= balls_x_speed[index];
 ;
@@ -800,9 +800,9 @@ L0368:	ldy     _index
 	ldx     #>(_balls_x)
 	clc
 	adc     _index
-	bcc     L0376
+	bcc     L037E
 	inx
-L0376:	jsr     pushax
+L037E:	jsr     pushax
 	sta     ptr1
 	stx     ptr1+1
 	ldx     #$00
@@ -814,17 +814,17 @@ L0376:	jsr     pushax
 ;
 ; else
 ;
-	jmp     L04DA
+	jmp     L04E2
 ;
 ; balls_x[index] += balls_x_speed[index];
 ;
-L0370:	lda     #<(_balls_x)
+L0378:	lda     #<(_balls_x)
 	ldx     #>(_balls_x)
 	clc
 	adc     _index
-	bcc     L037D
+	bcc     L0385
 	inx
-L037D:	jsr     pushax
+L0385:	jsr     pushax
 	sta     ptr1
 	stx     ptr1+1
 	ldy     #$00
@@ -834,14 +834,14 @@ L037D:	jsr     pushax
 	lda     _balls_x_speed,y
 	clc
 	adc     ptr1
-L04DA:	ldy     #$00
+L04E2:	ldy     #$00
 	jsr     staspidx
 ;
 ; if (balls_y_direction[index] == GOING_UP)
 ;
 	ldy     _index
 	lda     _balls_y_direction,y
-	bne     L0381
+	bne     L0389
 ;
 ; balls_y[index] -= balls_y_speed[index];
 ;
@@ -849,9 +849,9 @@ L04DA:	ldy     #$00
 	ldx     #>(_balls_y)
 	clc
 	adc     _index
-	bcc     L0387
+	bcc     L038F
 	inx
-L0387:	jsr     pushax
+L038F:	jsr     pushax
 	sta     ptr1
 	stx     ptr1+1
 	ldx     #$00
@@ -863,17 +863,17 @@ L0387:	jsr     pushax
 ;
 ; else
 ;
-	jmp     L04DB
+	jmp     L04E3
 ;
 ; balls_y[index] += balls_y_speed[index];
 ;
-L0381:	lda     #<(_balls_y)
+L0389:	lda     #<(_balls_y)
 	ldx     #>(_balls_y)
 	clc
 	adc     _index
-	bcc     L038E
+	bcc     L0396
 	inx
-L038E:	jsr     pushax
+L0396:	jsr     pushax
 	sta     ptr1
 	stx     ptr1+1
 	ldy     #$00
@@ -883,7 +883,7 @@ L038E:	jsr     pushax
 	lda     _balls_y_speed,y
 	clc
 	adc     ptr1
-L04DB:	ldy     #$00
+L04E3:	ldy     #$00
 	jsr     staspidx
 ;
 ; if (balls_x[index] < LEFT_BOUNDARY)
@@ -891,7 +891,7 @@ L04DB:	ldy     #$00
 	ldy     _index
 	lda     _balls_x,y
 	cmp     #$05
-	bcs     L0392
+	bcs     L039A
 ;
 ; ++player_1_score;
 ;
@@ -914,10 +914,10 @@ L04DB:	ldy     #$00
 ;
 ; if (balls_x[index] > RIGHT_BOUNDARY)
 ;
-L0392:	ldy     _index
+L039A:	ldy     _index
 	lda     _balls_x,y
 	cmp     #$E1
-	bcc     L039F
+	bcc     L03A7
 ;
 ; ++player_2_score;
 ;
@@ -940,7 +940,7 @@ L0392:	ldy     _index
 ;
 ; }
 ;
-L039F:	rts
+L03A7:	rts
 
 .endproc
 
@@ -959,9 +959,9 @@ L039F:	rts
 ;
 	lda     #$00
 	sta     _index
-L04DC:	lda     _index
+L04E4:	lda     _index
 	cmp     #$04
-	bcs     L0353
+	bcs     L035B
 ;
 ; if (balls_type[index] == TURN_OFF)
 ;
@@ -971,7 +971,7 @@ L04DC:	lda     _index
 ;
 ; continue; // we found an empty spot
 ;
-	beq     L04DD
+	beq     L04E5
 ;
 ; move_ball();
 ;
@@ -979,12 +979,12 @@ L04DC:	lda     _index
 ;
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
-L04DD:	inc     _index
-	jmp     L04DC
+L04E5:	inc     _index
+	jmp     L04E4
 ;
 ; }
 ;
-L0353:	rts
+L035B:	rts
 
 .endproc
 
@@ -1003,9 +1003,9 @@ L0353:	rts
 ;
 	lda     #$00
 	sta     _index
-L04DE:	lda     _index
+L04E6:	lda     _index
 	cmp     #$04
-	bcs     L04DF
+	bcs     L04E7
 ;
 ; balls_type[index] = TURN_OFF;
 ;
@@ -1022,11 +1022,11 @@ L04DE:	lda     _index
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
 	inc     _index
-	jmp     L04DE
+	jmp     L04E6
 ;
 ; index = 0;
 ;
-L04DF:	lda     #$00
+L04E7:	lda     #$00
 	sta     _index
 ;
 ; balls_type[index] = LARGE_BALL;
@@ -1064,18 +1064,18 @@ L04DF:	lda     #$00
 ;
 ; }
 ;
-	beq     L03D7
+	beq     L03DF
 	cmp     #$01
-	beq     L03E1
+	beq     L03E9
 	cmp     #$02
-	beq     L03EB
+	beq     L03F3
 	cmp     #$03
-	beq     L03F5
+	beq     L03FD
 	rts
 ;
 ; balls_x_direction[index] = GOING_LEFT;
 ;
-L03D7:	ldy     _index
+L03DF:	ldy     _index
 	lda     #$00
 	sta     _balls_x_direction,y
 ;
@@ -1090,7 +1090,7 @@ L03D7:	ldy     _index
 ;
 ; balls_x_direction[index] = GOING_LEFT;
 ;
-L03E1:	ldy     _index
+L03E9:	ldy     _index
 	lda     #$00
 	sta     _balls_x_direction,y
 ;
@@ -1106,7 +1106,7 @@ L03E1:	ldy     _index
 ;
 ; balls_x_direction[index] = GOING_RIGHT;
 ;
-L03EB:	ldy     _index
+L03F3:	ldy     _index
 	lda     #$01
 	sta     _balls_x_direction,y
 ;
@@ -1121,7 +1121,7 @@ L03EB:	ldy     _index
 ;
 ; balls_x_direction[index] = GOING_RIGHT;
 ;
-L03F5:	ldy     _index
+L03FD:	ldy     _index
 	lda     #$01
 	sta     _balls_x_direction,y
 ;
@@ -1185,11 +1185,11 @@ L03F5:	ldy     _index
 ;
 	lda     _pad1_zapper
 	cmp     #$01
-	bne     L04E3
+	bne     L04EB
 	lda     _zap1_ready
-	beq     L04E3
+	beq     L04EB
 	lda     _zap1_cooldown
-	bne     L04E3
+	bne     L04EB
 ;
 ; trigger1_pulled = 1;
 ;
@@ -1203,18 +1203,18 @@ L03F5:	ldy     _index
 ;
 ; if ((pad2_zapper == 1) && (zap2_ready) && zap2_cooldown == 0)
 ;
-L04E3:	lda     _pad2_zapper
+L04EB:	lda     _pad2_zapper
 	cmp     #$01
-	bne     L04E5
+	bne     L04ED
 	lda     _zap2_ready
-	beq     L04E5
+	beq     L04ED
 	lda     _zap2_cooldown
-	beq     L04E6
-L04E5:	rts
+	beq     L04EE
+L04ED:	rts
 ;
 ; trigger2_pulled = 1;
 ;
-L04E6:	lda     #$01
+L04EE:	lda     #$01
 	sta     _trigger2_pulled
 ;
 ; zap2_cooldown = MAX_COOLDOWN;
@@ -1243,7 +1243,7 @@ L04E6:	lda     #$01
 ;
 	lda     _trigger1_pulled
 	cmp     #$01
-	bne     L04E7
+	bne     L04EF
 ;
 ; zap1_hit_detected = zap_read(0);
 ;
@@ -1253,9 +1253,9 @@ L04E6:	lda     #$01
 ;
 ; if (trigger2_pulled == 1)
 ;
-L04E7:	lda     _trigger2_pulled
+L04EF:	lda     _trigger2_pulled
 	cmp     #$01
-	bne     L034C
+	bne     L0354
 ;
 ; zap2_hit_detected = zap_read(1); // look for light in zapper, port 2
 ;
@@ -1264,7 +1264,7 @@ L04E7:	lda     _trigger2_pulled
 ;
 ; }
 ;
-L034C:	rts
+L0354:	rts
 
 .endproc
 
@@ -1283,7 +1283,7 @@ L034C:	rts
 ;
 	lda     _zap1_hit_detected
 	cmp     #$01
-	bne     L04EA
+	bne     L04F2
 ;
 ; balls_x_direction[index] = GOING_RIGHT;
 ;
@@ -1292,9 +1292,9 @@ L034C:	rts
 ;
 ; if (zap2_hit_detected == 1)
 ;
-L04EA:	lda     _zap2_hit_detected
+L04F2:	lda     _zap2_hit_detected
 	cmp     #$01
-	bne     L04EB
+	bne     L04F3
 ;
 ; balls_x_direction[index] = GOING_LEFT;
 ;
@@ -1304,17 +1304,17 @@ L04EA:	lda     _zap2_hit_detected
 ;
 ; if (zap1_hit_detected == 1 || zap2_hit_detected == 1) // if it's hit update the speed
 ;
-L04EB:	lda     _zap1_hit_detected
+L04F3:	lda     _zap1_hit_detected
 	cmp     #$01
-	beq     L04ED
+	beq     L04F5
 	lda     _zap2_hit_detected
 	cmp     #$01
-	beq     L04ED
+	beq     L04F5
 	rts
 ;
 ; balls_x_speed[index] += DEFAULT_SPEED_STEP;
 ;
-L04ED:	lda     #<(_balls_x_speed)
+L04F5:	lda     #<(_balls_x_speed)
 	ldx     #>(_balls_x_speed)
 	clc
 	adc     _index
@@ -1351,7 +1351,7 @@ L02C3:	sta     ptr1
 ;
 ; else
 ;
-	jmp     L04E8
+	jmp     L04F0
 ;
 ; balls_y_speed[index] += DEFAULT_SPEED_STEP;
 ;
@@ -1367,7 +1367,7 @@ L02C8:	sta     ptr1
 	lda     (ptr1),y
 	clc
 	adc     #$01
-L04E8:	sta     (ptr1),y
+L04F0:	sta     (ptr1),y
 ;
 ; balls_hits[index] = balls_hits[index] + 1;
 ;
@@ -1390,17 +1390,17 @@ L02CC:	sta     ptr1
 ;
 	ldy     _index
 	lda     _balls_hits,y
-	beq     L04EF
+	beq     L04F7
 	ldy     _index
 	lda     _balls_type,y
-	bne     L04F0
-L04EF:	rts
+	bne     L04F8
+L04F7:	rts
 ;
 ; for (index2 = 0; index2 < MAX_BALLS; ++index2)
 ;
-L04F0:	lda     #$00
+L04F8:	lda     #$00
 	sta     _index2
-L04F1:	lda     _index2
+L04F9:	lda     _index2
 	cmp     #$04
 	bcs     L02DA
 ;
@@ -1417,7 +1417,7 @@ L04F1:	lda     _index2
 ; for (index2 = 0; index2 < MAX_BALLS; ++index2)
 ;
 	inc     _index2
-	jmp     L04F1
+	jmp     L04F9
 ;
 ; switch (balls_type[index])
 ;
@@ -1439,13 +1439,13 @@ L02EB:	ldy     _index2
 ;
 ; break;
 ;
-	jmp     L04E9
+	jmp     L04F1
 ;
 ; balls_type[index2] = MEDIUM_BALL;
 ;
 L02F1:	ldy     _index2
 	lda     #$01
-L04E9:	sta     _balls_type,y
+L04F1:	sta     _balls_type,y
 ;
 ; balls_x[index2] = balls_x[index];
 ;
@@ -1549,9 +1549,31 @@ L031B:	sta     ptr1
 	lda     #$01
 	sta     _balls_y_direction,y
 ;
+; if (balls_y_speed[index] == 0)
+;
+	ldy     _index
+	lda     _balls_y_speed,y
+	bne     L0323
+;
+; balls_y_speed[index] += DEFAULT_SPEED_STEP;
+;
+	lda     #<(_balls_y_speed)
+	ldx     #>(_balls_y_speed)
+	clc
+	adc     _index
+	bcc     L0329
+	inx
+L0329:	sta     ptr1
+	stx     ptr1+1
+	ldy     #$00
+	lda     (ptr1),y
+	clc
+	adc     #$01
+	sta     (ptr1),y
+;
 ; }
 ;
-	rts
+L0323:	rts
 
 .endproc
 
@@ -1569,7 +1591,7 @@ L031B:	sta     ptr1
 ; if (zap1_cooldown > 0)
 ;
 	lda     _zap1_cooldown
-	beq     L04F2
+	beq     L04FA
 ;
 ; --zap1_cooldown;
 ;
@@ -1577,7 +1599,7 @@ L031B:	sta     ptr1
 ;
 ; if (zap2_cooldown > 0)
 ;
-L04F2:	lda     _zap2_cooldown
+L04FA:	lda     _zap2_cooldown
 	beq     L02A8
 ;
 ; --zap2_cooldown;
@@ -1620,11 +1642,11 @@ L02A8:	rts
 ;
 ; }
 ;
-	beq     L0416
+	beq     L041E
 	cmp     #$01
-	beq     L0412
+	beq     L041A
 	cmp     #$02
-	bne     L040C
+	bne     L0414
 ;
 ; pointer2 = LargeBox;
 ;
@@ -1634,28 +1656,28 @@ L02A8:	rts
 ;
 ; break;
 ;
-	jmp     L04F3
+	jmp     L04FB
 ;
 ; pointer2 = MediumBox;
 ;
-L0412:	lda     #>(_MediumBox)
+L041A:	lda     #>(_MediumBox)
 	sta     _pointer2+1
 	lda     #<(_MediumBox)
 ;
 ; break;
 ;
-	jmp     L04F3
+	jmp     L04FB
 ;
 ; pointer2 = SmallBox;
 ;
-L0416:	lda     #>(_SmallBox)
+L041E:	lda     #>(_SmallBox)
 	sta     _pointer2+1
 	lda     #<(_SmallBox)
-L04F3:	sta     _pointer2
+L04FB:	sta     _pointer2
 ;
 ; oam_meta_spr(temp1, temp2, pointer2);
 ;
-L040C:	jsr     decsp2
+L0414:	jsr     decsp2
 	lda     _temp1
 	ldy     #$01
 	sta     (sp),y
@@ -1698,11 +1720,11 @@ L040C:	jsr     decsp2
 ;
 ; }
 ;
-	beq     L0438
+	beq     L0440
 	cmp     #$01
-	beq     L0431
+	beq     L0439
 	cmp     #$02
-	bne     L0438
+	bne     L0440
 ;
 ; pointer2 = LargeBall;
 ;
@@ -1712,24 +1734,24 @@ L040C:	jsr     decsp2
 ;
 ; break;
 ;
-	jmp     L04F4
+	jmp     L04FC
 ;
 ; pointer2 = MediumBall;
 ;
-L0431:	lda     #>(_MediumBall)
+L0439:	lda     #>(_MediumBall)
 	sta     _pointer2+1
 	lda     #<(_MediumBall)
 ;
 ; break;
 ;
-	jmp     L04F4
+	jmp     L04FC
 ;
 ; pointer2 = SmallBall;
 ;
-L0438:	lda     #>(_SmallBall)
+L0440:	lda     #>(_SmallBall)
 	sta     _pointer2+1
 	lda     #<(_SmallBall)
-L04F4:	sta     _pointer2
+L04FC:	sta     _pointer2
 ;
 ; oam_meta_spr(temp1, temp2, pointer2);
 ;
@@ -1773,9 +1795,9 @@ L04F4:	sta     _pointer2
 ;
 	lda     #$00
 	sta     _index
-L04F7:	lda     _index
+L04FF:	lda     _index
 	cmp     #$04
-	bcs     L0445
+	bcs     L044D
 ;
 ; index2 = shuffle_array[offset];
 ;
@@ -1800,7 +1822,7 @@ L04F7:	lda     _index
 ;
 ; continue; // we found an empty spot
 ;
-	beq     L04F8
+	beq     L0500
 ;
 ; draw_ball();
 ;
@@ -1808,12 +1830,12 @@ L04F7:	lda     _index
 ;
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
-L04F8:	inc     _index
-	jmp     L04F7
+L0500:	inc     _index
+	jmp     L04FF
 ;
 ; }
 ;
-L0445:	rts
+L044D:	rts
 
 .endproc
 
@@ -1851,21 +1873,21 @@ L0445:	rts
 ; memcpy(c_map, level, 240);
 ;
 	ldy     #$00
-L0463:	lda     _level,y
+L046B:	lda     _level,y
 	sta     _c_map,y
 	iny
 	cpy     #$F0
-	bne     L0463
+	bne     L046B
 ;
 ; for (y = 0;; y += 0x20)
 ;
 	lda     #$00
-L04FB:	sta     _y
+L0503:	sta     _y
 ;
 ; for (x = 0;; x += 0x20)
 ;
 	lda     #$00
-L04FA:	sta     _x
+L0502:	sta     _x
 ;
 ; address = get_ppu_addr(0, x, y);
 ;
@@ -1914,34 +1936,34 @@ L04FA:	sta     _x
 ;
 ; break;
 ;
-	beq     L04FC
+	beq     L0504
 ;
 ; for (x = 0;; x += 0x20)
 ;
 	lda     #$20
 	clc
 	adc     _x
-	jmp     L04FA
+	jmp     L0502
 ;
 ; if (y == 0xe0)
 ;
-L04FC:	lda     _y
+L0504:	lda     _y
 	cmp     #$E0
 ;
 ; break;
 ;
-	beq     L0465
+	beq     L046D
 ;
 ; for (y = 0;; y += 0x20)
 ;
 	lda     #$20
 	clc
 	adc     _y
-	jmp     L04FB
+	jmp     L0503
 ;
 ; ppu_on_all();
 ;
-L0465:	jmp     _ppu_on_all
+L046D:	jmp     _ppu_on_all
 
 .endproc
 
@@ -2004,15 +2026,15 @@ L0465:	jmp     _ppu_on_all
 ;
 ; while (index < MAX_COOLDOWN >> 2)
 ;
-	jmp     L0500
+	jmp     L0508
 ;
 ; if (index < temp1)
 ;
-L04FF:	lda     _index
+L0507:	lda     _index
 	cmp     _temp1
 	txa
 	sbc     #$00
-	bcs     L04A2
+	bcs     L04AA
 ;
 ; one_vram_buffer('l', NTADR_A(3 + index, 26));
 ;
@@ -2020,18 +2042,18 @@ L04FF:	lda     _index
 ;
 ; else
 ;
-	jmp     L0522
+	jmp     L052A
 ;
 ; one_vram_buffer(' ', NTADR_A(3 + index, 26));
 ;
-L04A2:	lda     #$20
-L0522:	jsr     pusha
+L04AA:	lda     #$20
+L052A:	jsr     pusha
 	lda     _index
 	clc
 	adc     #$03
-	bcc     L04B6
+	bcc     L04BE
 	ldx     #$01
-L04B6:	ora     #$40
+L04BE:	ora     #$40
 	pha
 	txa
 	ora     #$03
@@ -2051,9 +2073,9 @@ L04B6:	ora     #$40
 ; while (index < MAX_COOLDOWN >> 2)
 ;
 	ldx     #$00
-L0500:	lda     _index
+L0508:	lda     _index
 	cmp     #$02
-	bcc     L04FF
+	bcc     L0507
 ;
 ; index = 0;
 ;
@@ -2068,15 +2090,15 @@ L0500:	lda     _index
 ;
 ; while (index < MAX_COOLDOWN >> 2)
 ;
-	jmp     L0502
+	jmp     L050A
 ;
 ; if (index < temp1)
 ;
-L0501:	lda     _index
+L0509:	lda     _index
 	cmp     _temp1
 	txa
 	sbc     #$00
-	bcs     L04C1
+	bcs     L04C9
 ;
 ; one_vram_buffer('l', NTADR_A(26 - index, 26));
 ;
@@ -2084,12 +2106,12 @@ L0501:	lda     _index
 ;
 ; else
 ;
-	jmp     L0526
+	jmp     L052E
 ;
 ; one_vram_buffer(' ', NTADR_A(26 - index, 26));
 ;
-L04C1:	lda     #$20
-L0526:	jsr     pusha
+L04C9:	lda     #$20
+L052E:	jsr     pusha
 	lda     #$1A
 	sec
 	sbc     _index
@@ -2118,9 +2140,9 @@ L0526:	jsr     pusha
 ; while (index < MAX_COOLDOWN >> 2)
 ;
 	ldx     #$00
-L0502:	lda     _index
+L050A:	lda     _index
 	cmp     #$02
-	bcc     L0501
+	bcc     L0509
 ;
 ; }
 ;
@@ -2164,16 +2186,16 @@ L0502:	lda     _index
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
 	sta     _index
-L0527:	lda     _index
+L052F:	lda     _index
 	cmp     #$04
-	bcs     L0529
+	bcs     L0531
 ;
 ; if (balls_type[index] != TURN_OFF)
 ;
 	ldy     _index
 	lda     _balls_type,y
 	cmp     #$FF
-	beq     L0528
+	beq     L0530
 ;
 ; ++number_of_balls_active;
 ;
@@ -2181,14 +2203,14 @@ L0527:	lda     _index
 ;
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
-L0528:	inc     _index
-	jmp     L0527
+L0530:	inc     _index
+	jmp     L052F
 ;
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
-L0529:	lda     #$00
+L0531:	lda     #$00
 	sta     _index
-L052A:	lda     _index
+L0532:	lda     _index
 	cmp     #$04
 	bcs     L028F
 ;
@@ -2200,7 +2222,7 @@ L052A:	lda     _index
 ;
 ; continue; // we found an empty spot
 ;
-	beq     L052D
+	beq     L0535
 ;
 ; oam_clear(); // clear the NEXT frame
 ;
@@ -2222,23 +2244,27 @@ L052A:	lda     _index
 ;
 	lda     _zap1_hit_detected
 	cmp     #$01
-	beq     L028F
+	beq     L0534
 	lda     _zap2_hit_detected
 	cmp     #$01
-	beq     L028F
+	bne     L0535
+;
+; handle_ball_hit();
+;
+L0534:	jsr     _handle_ball_hit
+;
+; break;
+;
+	jmp     L028F
 ;
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
-L052D:	inc     _index
-	jmp     L052A
-;
-; handle_ball_hit(); // based off zapper hit data
-;
-L028F:	jsr     _handle_ball_hit
+L0535:	inc     _index
+	jmp     L0532
 ;
 ; ppu_mask(0x1e); // bg on, won't happen till NEXT frame
 ;
-	lda     #$1E
+L028F:	lda     #$1E
 	jmp     _ppu_mask
 
 .endproc
@@ -2298,7 +2324,7 @@ L028F:	jsr     _handle_ball_hit
 ;
 ; while (game_mode == MODE_TITLE) // gameloop
 ;
-	jmp     L052E
+	jmp     L0536
 ;
 ; ppu_wait_nmi(); // wait till beginning of the frame
 ;
@@ -2315,12 +2341,12 @@ L0248:	jsr     _ppu_wait_nmi
 ;
 ; while (game_mode == MODE_TITLE) // gameloop
 ;
-L052E:	lda     _game_mode
+L0536:	lda     _game_mode
 	beq     L0248
 ;
 ; while (game_mode == MODE_GAME) // gameloop
 ;
-	jmp     L0532
+	jmp     L053A
 ;
 ; ppu_wait_nmi(); // wait till beginning of the frame
 ;
@@ -2363,16 +2389,16 @@ L0250:	jsr     _ppu_wait_nmi
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
 	sta     _index
-L052F:	lda     _index
+L0537:	lda     _index
 	cmp     #$04
-	bcs     L0531
+	bcs     L0539
 ;
 ; if (balls_type[index] != TURN_OFF)
 ;
 	ldy     _index
 	lda     _balls_type,y
 	cmp     #$FF
-	beq     L0530
+	beq     L0538
 ;
 ; ++number_of_balls_active;
 ;
@@ -2380,12 +2406,12 @@ L052F:	lda     _index
 ;
 ; for (index = 0; index < MAX_BALLS; ++index)
 ;
-L0530:	inc     _index
-	jmp     L052F
+L0538:	inc     _index
+	jmp     L0537
 ;
 ; if (number_of_balls_active != 0)
 ;
-L0531:	lda     _number_of_balls_active
+L0539:	lda     _number_of_balls_active
 	beq     L026D
 ;
 ; move_balls();
@@ -2421,13 +2447,13 @@ L0275:	jsr     _gray_line
 ;
 ; while (game_mode == MODE_GAME) // gameloop
 ;
-L0532:	lda     _game_mode
+L053A:	lda     _game_mode
 	cmp     #$01
 	beq     L0250
 ;
 ; while (1)
 ;
-	jmp     L052E
+	jmp     L0536
 
 .endproc
 

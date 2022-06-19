@@ -121,10 +121,10 @@ void trigger_pulled(void)
 		read_zapper_hits();
 		if (zap1_hit_detected == 1 || zap2_hit_detected == 1)
 		{
+			handle_ball_hit();
 			break;
 		}
 	}
-	handle_ball_hit(); // based off zapper hit data
 
 	ppu_mask(0x1e); // bg on, won't happen till NEXT frame
 }
@@ -190,6 +190,7 @@ void handle_ball_hit(void)
 				break;
 			}
 			// copy over the old parent's values
+			// temp1 = balls_x[index];
 			balls_x[index2] = balls_x[index];
 			balls_y[index2] = balls_y[index];
 
@@ -201,6 +202,11 @@ void handle_ball_hit(void)
 			// now that it's copied, overwrite the current one
 			balls_type[index] = balls_type[index2];
 			balls_y_direction[index] = GOING_DOWN;
+
+			if (balls_y_speed[index] == 0)
+			{
+				balls_y_speed[index] += DEFAULT_SPEED_STEP;
+			}
 		}
 	}
 }
