@@ -54,7 +54,16 @@ void main(void)
 			draw_cooldown();
 
 			// should check if ANY ball is on the screen or if we need a new one
-			if (number_of_balls_active > 0)
+			number_of_balls_active = 0;
+			for (index = 0; index < MAX_BALLS; ++index)
+			{
+				if (balls_type[index] != TURN_OFF)
+				{
+					++number_of_balls_active;
+				}
+			}
+
+			if (number_of_balls_active != 0)
 			{
 				move_balls();
 				draw_balls();
@@ -63,11 +72,6 @@ void main(void)
 					trigger_pulled();
 				}
 			}
-			// can add a wait and elseif so ball isn't added too quickly
-			//  else if (Ball1.wait)
-			//  {
-			//  	--Ball1.wait;
-			//  }
 			else
 			{
 				new_ball();
@@ -98,19 +102,28 @@ void trigger_pulled(void)
 	ppu_wait_nmi(); // wait for that blank frame
 
 	index = 0;
-	while (index < number_of_balls_active && ball_index_hit == NO_HITS)
+	number_of_balls_active = 0;
+	for (index = 0; index < MAX_BALLS; ++index)
 	{
+		if (balls_type[index] != TURN_OFF)
+		{
+			++number_of_balls_active;
+		}
+	}
+	for (index = 0; index < MAX_BALLS; ++index)
+	{
+		if (balls_type[index] == TURN_OFF)
+			continue; // we found an empty spot
+
 		oam_clear(); // clear the NEXT frame
 		draw_box();	 // draw a ball on the next frame
 		ppu_wait_nmi();
 		read_zapper_hits();
 		if (zap1_hit_detected == 1 || zap2_hit_detected == 1)
 		{
-			ball_index_hit = index;
+			break;
 		}
-		index++;
 	}
-	index = ball_index_hit;
 	update_ball_movement(); // based off zapper hit data
 
 	ppu_mask(0x1e); // bg on, won't happen till NEXT frame
@@ -272,9 +285,7 @@ void move_ball(void)
 	if (balls_x[index] < LEFT_BOUNDARY)
 	{
 		++player_1_score;
-		balls_active[index] = TURN_OFF;
-		// balls_type[index] = TURN
-		--number_of_balls_active;
+		balls_type[index] = TURN_OFF;
 		zap1_cooldown = 0;
 		zap2_cooldown = 0;
 	}
@@ -282,8 +293,7 @@ void move_ball(void)
 	if (balls_x[index] > RIGHT_BOUNDARY)
 	{
 		++player_2_score;
-		balls_active[index] = TURN_OFF;
-		--number_of_balls_active;
+		balls_type[index] = TURN_OFF;
 		zap1_cooldown = 0;
 		zap2_cooldown = 0;
 	}
@@ -329,7 +339,7 @@ void new_ball(void)
 	default:
 		break;
 	}
-	number_of_balls_active++;
+
 	// balls_active[index] = 1;
 	// let's just add another one too:
 	index = 1;
@@ -362,7 +372,6 @@ void new_ball(void)
 	default:
 		break;
 	}
-	number_of_balls_active++;
 }
 
 void draw_box(void)
