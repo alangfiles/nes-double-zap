@@ -155,14 +155,14 @@ void handle_ball_hit(void)
 
 	if (zap1_hit_detected == 1 || zap2_hit_detected == 1) // if it's hit update the speed
 	{
-		balls_x_speed[index] += DEFAULT_SPEED_STEP;
+		balls_x_speed[index] += DEFAULT_SPEED_STEP_UP;
 		if (get_frame_count() & 0x01 == 1)
 		{
-			balls_y_speed[index] -= DEFAULT_SPEED_STEP;
+			balls_y_speed[index] -= DEFAULT_SPEED_STEP_UP;
 		}
 		else
 		{
-			balls_y_speed[index] += DEFAULT_SPEED_STEP;
+			balls_y_speed[index] += DEFAULT_SPEED_STEP_UP;
 		}
 
 		// handle hit / split up ball (for non-small balls)
@@ -206,7 +206,7 @@ void handle_ball_hit(void)
 
 			if (balls_y_speed[index] == 0)
 			{
-				balls_y_speed[index] += DEFAULT_SPEED_STEP;
+				++balls_y_speed[index];
 			}
 		}
 	}
@@ -306,8 +306,17 @@ void move_ball(void)
 		balls_y_direction[index] = GOING_DOWN;
 	}
 
-	// move ball according to direction
+	// slow down ball a little each frame:
+	if (balls_x_speed[index] > 0)
+	{
+		balls_x_speed[index] = balls_x_speed[index] - DEFAULT_SPEED_STEP_DOWN;
+	}
+	if (balls_y_speed[index] > 0)
+	{
+		balls_y_speed[index] = balls_y_speed[index] - DEFAULT_SPEED_STEP_DOWN;
+	}
 
+	// move ball according to direction
 	if (balls_x_direction[index] == GOING_LEFT)
 	{
 		balls_x[index] -= balls_x_speed[index];
@@ -396,8 +405,8 @@ void new_ball(void)
 void draw_box(void)
 {
 
-	temp1 = balls_x[index];
-	temp2 = balls_y[index];
+	temp1 = high_byte(balls_x[index]);
+	temp2 = high_byte(balls_y[index]);
 
 	// use if we want bigger targets
 	// and need to realign them

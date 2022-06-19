@@ -1,18 +1,19 @@
 // variables
-#define DEFAULT_X_SPEED 1
-#define DEFAULT_Y_SPEED 1
-#define DEFAULT_SPEED_STEP 1
-#define LEFT_BOUNDARY 0x05
-#define RIGHT_BOUNDARY 0xe0
-#define TOP_BOUNDARY 0xb0
-#define BOTTOM_BOUNDARY 0x20
-#define MIDDLE_SCREEN 0x70
+#define DEFAULT_X_SPEED 300
+#define DEFAULT_Y_SPEED 200
+#define DEFAULT_SPEED_STEP_UP 400
+#define DEFAULT_SPEED_STEP_DOWN 5
+#define LEFT_BOUNDARY 0x0500
+#define RIGHT_BOUNDARY 0xe000
+#define TOP_BOUNDARY 0xb000
+#define BOTTOM_BOUNDARY 0x2000
+#define MIDDLE_SCREEN 0x7000
 
 #define MAX_COOLDOWN 8
 #define MAX_BALLS 4
 #define TURN_OFF 0xff
 #define NO_HITS 0xfe
-#define MAX_HITS 3
+#define MAX_HITS 10
 
 #pragma bss-name(push, "ZEROPAGE")
 
@@ -36,10 +37,10 @@ const unsigned char * pointer2;
 
 
 #define MAX_BALLS 4
-unsigned char balls_x[MAX_BALLS];
-unsigned char balls_y[MAX_BALLS];
-unsigned char balls_x_speed[MAX_BALLS];
-unsigned char balls_y_speed[MAX_BALLS];
+unsigned int balls_x[MAX_BALLS];
+unsigned int balls_y[MAX_BALLS];
+unsigned int balls_x_speed[MAX_BALLS];
+unsigned int balls_y_speed[MAX_BALLS];
 unsigned char balls_x_direction[MAX_BALLS];
 unsigned char balls_y_direction[MAX_BALLS];
 unsigned char balls_active[MAX_BALLS];
