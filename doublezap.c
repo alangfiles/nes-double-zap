@@ -60,32 +60,39 @@ void main(void)
 				draw_ball();
 				if (trigger1_pulled || trigger2_pulled)
 				{
+					zap1_detected_in_wait = 0;
+					zap2_detected_in_wait = 0;
 					// idk if this'll work to delay the drawing
 					index = 0;
-					while (index < frames_to_wait)
+					while (index < frames_to_read)
 					{
+						oam_clear();
+						move_ball();
+						draw_ball();
+						read_zapper_hits();
 						ppu_wait_nmi();
 						++index;
+						zap1_detected_in_wait = zap1_detected_in_wait | zap1_hit_detected;
+						zap2_detected_in_wait = zap2_detected_in_wait | zap2_hit_detected;
 					}
 
 					// trigger pulled, play bang sound
 					// sfx_play(0, 0);
 
 					// bg off, project white boxes
-					oam_clear();
-					draw_box();			// redraw the star as a box
-					ppu_mask(0x16); // BG off, won't happen till NEXT frame
+					// oam_clear();
+					// draw_box();			// redraw the star as a box
+					// ppu_mask(0x16); // BG off, won't happen till NEXT frame
 
-					ppu_wait_nmi(); // wait till the top of the next frame
-					// this frame will display no BG and a white box
+					// ppu_wait_nmi(); // wait till the top of the next frame
+					// // this frame will display no BG and a white box
 
-					oam_clear();		// clear the NEXT frame
-					draw_ball();		// draw a star on the NEXT frame
-					ppu_mask(0x1e); // bg on, won't happen till NEXT frame
+					// oam_clear(); // clear the NEXT frame
+					// draw_ball(); // draw a star on the NEXT frame
 
-					read_zapper_hits();
 					update_ball_movement(); // based off zapper hit data
 																	// if hit failed, it should have already ran into the next nmi
+																	// ppu_mask(0x1e);					// bg on, won't happen till NEXT frame
 				}
 			}
 			else if (ball_wait)
@@ -115,11 +122,11 @@ void update_cooldown(void)
 
 void update_ball_movement(void)
 {
-	if (zap1_hit_detected == 1)
+	if (zap1_detected_in_wait == 1)
 	{
 		ball_x_direction = GOING_RIGHT;
 	}
-	if (zap2_hit_detected == 1)
+	if (zap2_detected_in_wait == 1)
 	{
 		ball_x_direction = GOING_LEFT;
 	}
@@ -291,7 +298,7 @@ void draw_box(void)
 {
 	temp1 = high_byte(ball_x);
 	temp2 = high_byte(ball_y);
-	oam_meta_spr(temp1, temp2, WhiteBox);
+	oam_meta_spr(temp1 - 4, temp2 - 4, LargeBox);
 }
 
 void draw_ball(void)
@@ -299,7 +306,7 @@ void draw_ball(void)
 	temp1 = high_byte(ball_x);
 	temp2 = high_byte(ball_y);
 
-	oam_meta_spr(temp1, temp2, AlanHead);
+	oam_meta_spr(temp1, temp2, LargeBall);
 }
 
 void draw_bg(void)
@@ -345,7 +352,7 @@ void draw_cooldown(void)
 	{
 		if (index < temp1)
 		{
-			one_vram_buffer('|', NTADR_A(3 + index, 26));
+			one_vram_buffer('l', NTADR_A(3 + index, 26));
 		}
 		else
 		{
@@ -362,7 +369,7 @@ void draw_cooldown(void)
 	{
 		if (index < temp1)
 		{
-			one_vram_buffer('|', NTADR_A(26 - index, 26));
+			one_vram_buffer('l', NTADR_A(26 - index, 26));
 		}
 		else
 		{

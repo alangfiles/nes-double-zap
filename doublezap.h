@@ -1,4 +1,4 @@
-//variables
+// variables
 #define DEFAULT_X_SPEED 300
 #define DEFAULT_Y_SPEED 200
 #define DEFAULT_SPEED_STEP 40
@@ -12,26 +12,32 @@
 
 #pragma bss-name(push, "ZEROPAGE")
 
-unsigned char frames_to_wait = 5; //used to calibrate the screen for modern displays
+unsigned char frames_to_wait = 0; // used to calibrate the screen for modern displays
+unsigned char frames_to_read = 10; // how many frames to detect light for
 unsigned char pad1_zapper;
-unsigned char zap1_ready; //wait till it's 0
+unsigned char zap1_ready; // wait till it's 0
 unsigned char zap1_hit_detected;
 unsigned char pad2_zapper;
-unsigned char zap2_ready; //wait till it's 0
+unsigned char zap2_ready; // wait till it's 0
 unsigned char zap2_hit_detected;
 unsigned char zap1_cooldown = 0;
 unsigned char zap2_cooldown = 0;
+unsigned char zap1_detected_in_wait = 0;
+unsigned char zap2_detected_in_wait = 0;
 
-//debuging with pad
+// debuging with pad
 unsigned char pad1;
 unsigned char pad1_new;
 
-
-enum{
-	GOING_UP, GOING_DOWN
+enum
+{
+	GOING_UP,
+	GOING_DOWN
 };
-enum{
-	GOING_LEFT, GOING_RIGHT
+enum
+{
+	GOING_LEFT,
+	GOING_RIGHT
 };
 
 unsigned char ball_x_direction;
@@ -62,13 +68,13 @@ enum
 
 // room loader code
 int address;
-unsigned char x; 
+unsigned char x;
 unsigned char y;
 unsigned char index = 0;
 
 #pragma bss-name(push, "BSS")
 
-unsigned char c_map[240];// collision map
+unsigned char c_map[240]; // collision map
 
 // PROTOTYPES
 void move_ball(void);
