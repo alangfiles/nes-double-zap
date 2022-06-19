@@ -309,11 +309,25 @@ void move_ball(void)
 	// slow down ball a little each frame:
 	if (balls_x_speed[index] > 0)
 	{
-		balls_x_speed[index] = balls_x_speed[index] - DEFAULT_SPEED_STEP_DOWN;
+		if ((balls_x_speed[index] < DEFAULT_SPEED_STEP_DOWN))
+		{
+			balls_x_speed[index] = 0;
+		}
+		else
+		{
+			balls_x_speed[index] = balls_x_speed[index] - DEFAULT_SPEED_STEP_DOWN;
+		}
 	}
 	if (balls_y_speed[index] > 0)
 	{
-		balls_y_speed[index] = balls_y_speed[index] - DEFAULT_SPEED_STEP_DOWN;
+		if ((balls_y_speed[index] < DEFAULT_SPEED_STEP_DOWN))
+		{
+			balls_y_speed[index] = 0;
+		}
+		else
+		{
+			balls_y_speed[index] = balls_y_speed[index] - DEFAULT_SPEED_STEP_DOWN;
+		}
 	}
 
 	// move ball according to direction
@@ -445,8 +459,8 @@ void draw_box(void)
 
 void draw_ball(void)
 {
-	temp1 = balls_x[index2]; // temp_x value
-	temp2 = balls_y[index2]; // temp_y value
+	temp1 = high_byte(balls_x[index2]); // temp_x value
+	temp2 = high_byte(balls_y[index2]); // temp_y value
 
 	//  the whole idea behind having sprites_type and sprites_anim is
 	//  to have different anim frames, which we might want.
