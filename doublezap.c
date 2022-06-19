@@ -54,58 +54,66 @@ void main(void)
 			update_cooldown();
 			draw_cooldown();
 
-			if (ball_active)
+			// should check if ANY ball is on the screen or if we need a new one
+			if (number_of_balls_active > 0)
 			{
-				move_ball();
-				draw_ball();
+				move_balls();
+				draw_balls();
 				if (trigger1_pulled || trigger2_pulled)
 				{
-					zap1_detected_in_wait = 0;
-					zap2_detected_in_wait = 0;
-					// idk if this'll work to delay the drawing
-					index = 0;
-					while (index < frames_to_read)
-					{
-						oam_clear();
-						move_ball();
-						draw_ball();
-						read_zapper_hits();
-						ppu_wait_nmi();
-						++index;
-						zap1_detected_in_wait = zap1_detected_in_wait | zap1_hit_detected;
-						zap2_detected_in_wait = zap2_detected_in_wait | zap2_hit_detected;
-					}
-
-					// trigger pulled, play bang sound
-					// sfx_play(0, 0);
-
-					// bg off, project white boxes
-					// oam_clear();
-					// draw_box();			// redraw the star as a box
-					// ppu_mask(0x16); // BG off, won't happen till NEXT frame
-
-					// ppu_wait_nmi(); // wait till the top of the next frame
-					// // this frame will display no BG and a white box
-
-					// oam_clear(); // clear the NEXT frame
-					// draw_ball(); // draw a star on the NEXT frame
-
-					update_ball_movement(); // based off zapper hit data
-																	// if hit failed, it should have already ran into the next nmi
-																	// ppu_mask(0x1e);					// bg on, won't happen till NEXT frame
+					trigger_pulled();
 				}
 			}
-			else if (ball_wait)
-			{
-				--ball_wait;
-			}
+			// can add a wait and elseif so ball isn't added too quickly
+			//  else if (Ball1.wait)
+			//  {
+			//  	--Ball1.wait;
+			//  }
 			else
 			{
 				new_ball();
 			}
+
 			gray_line();
 		}
 	}
+}
+
+void trigger_pulled(void)
+{
+	/*
+	 * Goes through the required actions for a trigger pull
+	 * blank the screen
+	 * for each object,
+	 *   for each frame
+	 *     draw boxes
+	 *     detect hits
+	 */
+
+	// trigger pulled, play bang sound
+	// sfx_play(0, 0);
+
+	// blank the screen
+	oam_clear();
+	ppu_mask(0x16); // BG off, won't happen till NEXT frame
+	ppu_wait_nmi(); // wait for that blank frame
+
+	index = 0;
+	while (index < number_of_balls_active && ball_index_hit == NO_HITS)
+	{
+		oam_clear(); // clear the NEXT frame
+		draw_box();	 // draw a ball on the next frame
+		read_zapper_hits();
+		if (zap1_hit_detected == 1 || zap2_hit_detected == 1)
+		{
+			ball_index_hit = index;
+		}
+		index++;
+	}
+	index = ball_index_hit;
+	update_ball_movement(); // based off zapper hit data
+
+	ppu_mask(0x1e); // bg on, won't happen till NEXT frame
 }
 
 void update_cooldown(void)
@@ -122,25 +130,25 @@ void update_cooldown(void)
 
 void update_ball_movement(void)
 {
-	if (zap1_detected_in_wait == 1)
+	if (zap1_hit_detected == 1)
 	{
-		ball_x_direction = GOING_RIGHT;
+		balls_x_direction[index] = GOING_RIGHT;
 	}
-	if (zap2_detected_in_wait == 1)
+	if (zap2_hit_detected == 1)
 	{
-		ball_x_direction = GOING_LEFT;
+		balls_x_direction[index] = GOING_LEFT;
 	}
 
 	if (zap1_hit_detected || zap2_hit_detected) // if it's hit update the speed
 	{
-		ball_x_speed += DEFAULT_SPEED_STEP;
+		balls_x_speed[index] += DEFAULT_SPEED_STEP;
 		if (get_frame_count() & 0x01 == 1)
 		{
-			ball_y_speed -= DEFAULT_SPEED_STEP / 4;
+			balls_y_speed[index] -= DEFAULT_SPEED_STEP;
 		}
 		else
 		{
-			ball_y_speed += DEFAULT_SPEED_STEP;
+			balls_y_speed[index] += DEFAULT_SPEED_STEP;
 		}
 	}
 }
@@ -190,12 +198,13 @@ void read_zapper_hits(void)
 	// this should be the read code:
 	if (trigger1_pulled == 1)
 	{
-		zap1_hit_detected = zap_read(0); // look for light in zapper, port 1
-																		 // debug controller read code
-																		 //  if (pad1_new & PAD_A)
-																		 //  {
-																		 //  	zap1_hit_detected = 1;
-																		 //  }
+		zap1_hit_detected = zap_read(0);
+		// look for light in zapper, port 1
+		// debug controller read code
+		//  if (pad1_new & PAD_A)
+		//  {
+		//  	zap1_hit_detected = 1;
+		//  }
 	}
 	if (trigger2_pulled == 1)
 	{
@@ -209,54 +218,68 @@ void read_zapper_hits(void)
 	}
 }
 
+void move_balls(void)
+{
+	offset = get_frame_count() & 3; // returns 0,1,2,3
+	for (index = 0; index < MAX_BALLS; ++index)
+	{
+		index2 = shuffle_array[offset];
+		++offset;
+		index2 = index; // <-- shortcut to keep the shuffling code in if we need it
+
+		if (balls_type[index2] == TURN_OFF)
+			continue; // we found an empty spot
+
+		move_ball();
+	}
+}
+
 void move_ball(void)
 {
 	// bounce off ceiling
-	if (ball_y > TOP_BOUNDARY)
+	if (balls_y[index2] > TOP_BOUNDARY)
 	{
-		ball_y_direction = GOING_UP;
+		balls_y_direction[index2] = GOING_UP;
 	}
-	if (ball_y < BOTTOM_BOUNDARY)
+	if (balls_y[index2] < BOTTOM_BOUNDARY)
 	{
-		ball_y_direction = GOING_DOWN;
+		balls_y_direction[index2] = GOING_DOWN;
 	}
 
 	// move ball according to direction
 
-	if (ball_x_direction == GOING_LEFT)
+	if (balls_x_direction[index2] == GOING_LEFT)
 	{
-		ball_x -= ball_x_speed;
+		balls_x[index2] -= balls_x_speed[index2];
 	}
 	else
 	{
-		ball_x += ball_x_speed;
+		balls_x[index2] += balls_x_speed[index2];
 	}
 
-	if (ball_y_direction == GOING_UP)
+	if (balls_y_direction[index2] == GOING_UP)
 	{
-		ball_y -= ball_y_speed;
+		balls_y[index2] -= balls_y_speed[index2];
 	}
 	else
 	{
-		ball_y += ball_y_speed;
+		balls_y[index2] += balls_y_speed[index2];
 	}
 
 	// check boundaries
 
-	if (ball_x < LEFT_BOUNDARY)
+	if (balls_x[index2] < LEFT_BOUNDARY)
 	{
 		++player_1_score;
-		ball_active = 0;
-		ball_wait = 20;
+		--number_of_balls_active;
 		zap1_cooldown = 0;
 		zap2_cooldown = 0;
 	}
 
-	if (ball_x > RIGHT_BOUNDARY)
+	if (balls_x[index2] > RIGHT_BOUNDARY)
 	{
 		++player_2_score;
-		ball_active = 0;
-		ball_wait = 20;
+		--number_of_balls_active;
 		zap1_cooldown = 0;
 		zap2_cooldown = 0;
 	}
@@ -264,49 +287,128 @@ void move_ball(void)
 
 void new_ball(void)
 {
-	ball_active = 1;
-	ball_x = MIDDLE_SCREEN; // should give 0x4000-0xbf80
-	ball_y = MIDDLE_SCREEN; // int
+	// clear all the types (used to draw)
+	for (index = 0; index < MAX_BALLS; ++index)
+	{
+		balls_type[index] = TURN_OFF;
+	}
 
-	ball_x_speed = DEFAULT_X_SPEED; // 0 is stopped, 400 is fast
-	ball_y_speed = DEFAULT_Y_SPEED;
+	// add a new big ball in slot 0
+
+	index = 0;
+	balls_type[index] = LARGE_BALL;
+
+	balls_x[index] = MIDDLE_SCREEN;
+	balls_y[index] = MIDDLE_SCREEN;
+
+	balls_x_speed[index] = DEFAULT_X_SPEED;
+	balls_y_speed[index] = DEFAULT_Y_SPEED;
 
 	switch (get_frame_count() & 0b00000011)
 	{
 	case 0:
-		ball_x_direction = GOING_LEFT;
-		ball_y_direction = GOING_UP;
+		balls_x_direction[index] = GOING_LEFT;
+		balls_y_direction[index] = GOING_UP;
 		break;
 	case 1:
-		ball_x_direction = GOING_LEFT;
-		ball_y_direction = GOING_DOWN;
+		balls_x_direction[index] = GOING_LEFT;
+		balls_y_direction[index] = GOING_DOWN;
 		break;
 	case 2:
-		ball_x_direction = GOING_RIGHT;
-		ball_y_direction = GOING_DOWN;
+		balls_x_direction[index] = GOING_RIGHT;
+		balls_y_direction[index] = GOING_DOWN;
 		break;
 	case 3:
-		ball_x_direction = GOING_RIGHT;
-		ball_y_direction = GOING_UP;
+		balls_x_direction[index] = GOING_RIGHT;
+		balls_y_direction[index] = GOING_UP;
 		break;
 	default:
 		break;
 	}
+	number_of_balls_active++;
+	// balls_active[index] = 1;
 }
 
 void draw_box(void)
 {
-	temp1 = high_byte(ball_x);
-	temp2 = high_byte(ball_y);
-	oam_meta_spr(temp1 - 4, temp2 - 4, LargeBox);
+
+	temp1 = balls_x[index];
+	temp2 = balls_y[index];
+
+	// use if we want bigger targets
+	// and need to realign them
+	// switch (balls_type[index])
+	// {
+	// case SMALL_BALL:
+	// 	temp1 = temp1 - 4;
+	// 	temp2 = temp2 - 4;
+	// 	break;
+	// case MEDIUM_BALL:
+	// 	break;
+	// case LARGE_BALL:
+	// 	temp1 = temp1 + 4;
+	// 	temp2 = temp2 + 4;
+	// 	break;
+	// default:
+	// 	break;
+	// }
+
+	switch (balls_type[index])
+	{
+	case LARGE_BALL:
+		pointer2 = LargeBox;
+		break;
+	case MEDIUM_BALL:
+		pointer2 = MediumBox;
+		break;
+	case SMALL_BALL:
+		pointer2 = SmallBox;
+		break;
+	default:
+		break;
+	}
+	oam_meta_spr(temp1, temp2, pointer2);
 }
 
 void draw_ball(void)
 {
-	temp1 = high_byte(ball_x);
-	temp2 = high_byte(ball_y);
+	temp1 = balls_x[index2]; // temp_x value
+	temp2 = balls_y[index2]; // temp_y value
 
-	oam_meta_spr(temp1, temp2, LargeBall);
+	//  the whole idea behind having sprites_type and sprites_anim is
+	//  to have different anim frames, which we might want.
+	switch (balls_type[index2])
+	{
+	case LARGE_BALL:
+		pointer2 = LargeBall;
+		break;
+	case MEDIUM_BALL:
+		pointer2 = MediumBall;
+		break;
+	case SMALL_BALL:
+		pointer2 = SmallBall;
+		break;
+	default:
+		pointer2 = SmallBall;
+		break;
+	}
+	oam_meta_spr(temp1, temp2, pointer2);
+}
+
+void draw_balls(void)
+{
+	offset = get_frame_count() & 3; // returns 0,1,2,3
+	for (index = 0; index < MAX_BALLS; ++index)
+	{
+		index2 = shuffle_array[offset];
+		++offset;
+		index2 = index; // <-- shortcut to keep the shuffling code in if we need it
+
+		if (balls_type[index2] == TURN_OFF)
+			continue; // we found an empty spot
+
+		draw_ball();
+	}
 }
 
 void draw_bg(void)

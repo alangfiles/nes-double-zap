@@ -1,6 +1,13 @@
 
 #include "CSV/level.c"
 
+enum
+{
+	SMALL_BALL,
+	MEDIUM_BALL,
+	LARGE_BALL,
+};
+
 const unsigned char palette_bg[] = {
 		0x0f, 0x0f, 0x30, 0x2c,
 		0x1b, 0x17, 0x11, 0x0f,
@@ -18,7 +25,14 @@ const unsigned char metatiles[] = {
 		0x01, 0x01, 0x00, 0x00, 0,
 		0x00, 0x00, 0x02, 0x02, 0};
 
-const unsigned char Ball[] = {
+const unsigned char SmallBall[] = {
+		0, 0, 0x10, 1,
+		8, 0, 0x11, 1,
+		0, 8, 0x20, 1,
+		8, 8, 0x21, 1,
+		128};
+
+const unsigned char MediumBall[] = {
 		0, 0, 0x12, 2,
 		8, 0, 0x13, 2,
 		16, 0, 0x14, 2,
@@ -28,13 +42,6 @@ const unsigned char Ball[] = {
 		0, 16, 0x32, 2,
 		8, 16, 0x33, 2,
 		16, 16, 0x34, 2,
-		128};
-
-const unsigned char SmallBall[] = {
-		0, 0, 0x10, 1,
-		8, 0, 0x11, 1,
-		0, 8, 0x20, 1,
-		8, 8, 0x21, 1,
 		128};
 
 const unsigned char LargeBall[] = {
