@@ -131,3 +131,4 @@ void draw_bg(void);
 void draw_score(void);
 void draw_cooldown(void);
 void trigger_pulled(void);
+void clear_balls_and_hits(void);

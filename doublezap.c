@@ -28,6 +28,7 @@ void main(void)
 
 	set_vram_buffer(); // points ppu update to vram_buffer, do this at least once
 	ppu_on_all();			 // turn on screen
+	clear_balls_and_hits();
 
 	while (1)
 	{
@@ -343,8 +344,7 @@ void move_ball(void)
 		zap2_cooldown = 0;
 	}
 }
-
-void new_ball(void)
+void clear_balls_and_hits()
 {
 	// clear all the types (used to draw)
 	// clear how many hits
@@ -353,6 +353,11 @@ void new_ball(void)
 		balls_type[index] = TURN_OFF;
 		balls_hits[index] = 0;
 	}
+}
+
+void new_ball(void)
+{
+	clear_balls_and_hits();
 
 	// add a new big ball in slot 0
 
